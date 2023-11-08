@@ -1,10 +1,11 @@
-import React from "react";
-import { StyleSheet, Text, View } from 'react-native'
+import React from 'react';
+import {Text, View} from 'react-native';
+import Main from './src';
 
 export default function App() {
-    return (
-        <View>
-            <Text>testowanie react natived</Text>
-        </View>
-    )
+  return (
+    <View>
+      <Main/>
+    </View>
+  );
 }
