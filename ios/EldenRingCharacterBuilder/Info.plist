@@ -53,7 +53,7 @@
 	<false/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Mantinia Regular.otf</string>
+		<string>Mantinia-Regular.otf</string>
 	</array>
 </dict>
 </plist>
