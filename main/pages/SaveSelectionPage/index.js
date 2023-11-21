@@ -6,7 +6,10 @@ import CardScroll from '../../components/CardScroll';
 import NewSaveButton from '../../components/NewSaveButton';
 import SaveFileButton from '../../components/SaveFileButton';
 
-export default function SaveSelectionPage({navigation}) {
+export default function SaveSelectionPage({route,navigation}) {
+
+  const { username } = route.params;
+
   const [saveFiles, setSaveFiles] = useState([
     {name: '123456789123456789123456789', id: 1},
     {name: 'SAVE FILE 2', id: 2},
@@ -33,7 +36,7 @@ export default function SaveSelectionPage({navigation}) {
 
   return (
     <View style={style.container}>
-      <Title name={'ACCOUNT NAME ACCOUNT NAME'}></Title>
+      <Title name={username ? username : 'Account name'}></Title>
       <CardScroll style={style.card}>
         {saveFiles.map((item, index) => (
           <SaveFileButton

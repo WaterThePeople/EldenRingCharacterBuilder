@@ -4,6 +4,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import SaveSelectionPage from '../pages/SaveSelectionPage';
 import BuildSelectionPage from '../pages/BuildSelectionPage';
+import LoginPage from '../pages/LoginPage';
+import RegisterPage from '../pages/RegisterPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,8 +24,16 @@ function Navigation() {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName="SaveSelectionScreen"
+        initialRouteName="LoginScreen"
         >
+        <Stack.Screen
+          name="LoginScreen"
+          component={LoginPage}
+        />
+        <Stack.Screen
+          name="RegisterScreen"
+          component={RegisterPage}
+        />
         <Stack.Screen
           name="SaveSelectionScreen"
           component={SaveSelectionPage}
