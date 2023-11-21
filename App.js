@@ -3,7 +3,6 @@ import {StyleSheet, View} from 'react-native';
 import Main from './main';
 
 export default function App() {
-
   return (
     <View style={styles.container}>
       <Main />

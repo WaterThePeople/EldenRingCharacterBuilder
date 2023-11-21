@@ -8,8 +8,9 @@ import SaveFileButton from '../../components/SaveFileButton';
 
 export default function SaveSelectionPage({navigation}) {
   const [saveFiles, setSaveFiles] = useState([
-    {name: '1234567891234567', id: 1},
+    {name: '123456789123456789123456789', id: 1},
     {name: 'SAVE FILE 2', id: 2},
+    {name: 'Water The People testowanie obcinania znakow', id: 3},
   ]);
 
   const addSave = () => {
@@ -32,7 +33,7 @@ export default function SaveSelectionPage({navigation}) {
 
   return (
     <View style={style.container}>
-      <Title name={'ACCOUNT NAME'}></Title>
+      <Title name={'ACCOUNT NAME ACCOUNT NAME'}></Title>
       <CardScroll style={style.card}>
         {saveFiles.map((item, index) => (
           <SaveFileButton
