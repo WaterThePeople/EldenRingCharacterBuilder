@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, Image } from 'react-native';
 import style from './CategoryButton.sass';
 import DefaultText from '../DefaultText';
-import icons from '../../icons';
+import icons from '../../constantData/icons';
 
 export default function CategoryButton({ styles, category, icon, onClick }) {
 
