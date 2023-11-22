@@ -6,6 +6,7 @@ import SaveSelectionPage from '../pages/SaveSelectionPage';
 import BuildSelectionPage from '../pages/BuildSelectionPage';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
+import ClassPage from '../pages/ClassPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +42,10 @@ function Navigation() {
         <Stack.Screen
           name="BuildSelectionScreen"
           component={BuildSelectionPage}
+        />
+        <Stack.Screen
+          name="ClassScreen"
+          component={ClassPage}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -9,6 +9,10 @@ export default function BuildSelectionPage({ route, navigation }) {
 
   const { id, name } = route.params;
 
+  const moveTo = (path) => {
+    navigation.navigate(path);
+  };
+
   return (
     <View style={style.container}>
       <Title name={name}></Title>
@@ -17,6 +21,7 @@ export default function BuildSelectionPage({ route, navigation }) {
           icon={'class'}
           category={'Class'}
           styles={style.item}
+          onClick={() => moveTo('ClassScreen')}
         />
         <CategoryButton
           icon={'weapons'}
