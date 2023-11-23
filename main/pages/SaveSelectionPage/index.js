@@ -5,6 +5,7 @@ import Title from '../../components/Title';
 import CardScroll from '../../components/CardScroll';
 import NewSaveButton from '../../components/NewSaveButton';
 import SaveFileButton from '../../components/SaveFileButton';
+import DefaultTextInput from '../../components/DefaultTextInput';
 
 export default function SaveSelectionPage({route,navigation}) {
 
@@ -27,10 +28,11 @@ export default function SaveSelectionPage({route,navigation}) {
     setSaveFiles(saveFiles.filter(item => item.id !== id));
   };
 
-  const moveTo = (path,id,name) => {
+  const moveTo = (path,id,save,savesArray) => {
     navigation.navigate(path, {
       id: id,
-      name: name,
+      save: save,
+      savesArray: savesArray,
     });
   };
 
@@ -42,7 +44,7 @@ export default function SaveSelectionPage({route,navigation}) {
           <SaveFileButton
             label={item.name}
             key={index}
-            onClick={() => moveTo('BuildSelectionScreen', item.id, item.name)}
+            onClick={() => moveTo('BuildSelectionScreen', item.id, item.name, saveFiles)}
             onDelete={() => removeSave(item.id)}
           />
         ))}
