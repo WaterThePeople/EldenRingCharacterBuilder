@@ -1,25 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Image } from 'react-native';
 import style from './LoginPage.sass';
 import Card from '../../components/Card';
 import DefaultText from '../../components/DefaultText';
 import DefaultTextInput from '../../components/DefaultTextInput';
 import DefaultButton from '../../components/DefaultButton';
+import { auth } from '../../../firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth'
 
 export default function LoginPage({ route, navigation }) {
 
-    const [userName, setUserName] = useState('')
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const login = (path, username) => {
-        navigation.navigate(path, {
-            username: username,
-        });
+    const [wrongLogin, setWrongLogin] = useState(false)
+
+    const login = () => {
+        handleLogin();
     }
 
     const register = (path) => {
         navigation.navigate(path);
     }
+
+    const handleLogin = async () => {
+        try {
+            const response = await signInWithEmailAndPassword(auth, email, password)
+            navigation.navigate('SaveSelectionScreen');
+            setWrongLogin(false)
+        } catch (error) {
+            setWrongLogin(true)
+            console.log(error)
+        }
+        finally {
+
+        }
+    }
+
+    useEffect(() => {
+        setWrongLogin(false)
+    }, [email, password]);
 
     return (
         <Card style={style.card}>
@@ -33,14 +53,22 @@ export default function LoginPage({ route, navigation }) {
                 <DefaultText style={style.text} numberOfLines={2} autoFont>Log in to your account!</DefaultText>
             </View>
             <View style={style.container}>
+
+                {wrongLogin && (
+                    <View style={style.error_container}>
+                        <DefaultText style={style.error_text} autoFont>Wrong email or password!</DefaultText>
+                    </View>
+                )}
+
                 <View style={style.input_container}>
                     <DefaultTextInput
-                        value={userName}
-                        onChange={setUserName}
+                        value={email}
+                        onChange={setEmail}
                         style={style.input}
-                        placeholder={'Username'}
+                        placeholder={'Email'}
                     ></DefaultTextInput>
                 </View>
+
                 <View style={style.input_container}>
                     <DefaultTextInput
                         value={password}
@@ -54,7 +82,7 @@ export default function LoginPage({ route, navigation }) {
                 <DefaultButton
                     label={'Log in'}
                     styles={style.button}
-                    onClick={() => login('SaveSelectionScreen', userName)}
+                    onClick={() => login()}
                 />
                 <DefaultText>or</DefaultText>
                 <DefaultButton

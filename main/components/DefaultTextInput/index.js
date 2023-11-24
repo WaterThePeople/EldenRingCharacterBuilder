@@ -19,8 +19,8 @@ export default function DefaultTextInput({
           style,
           {
             width: goBackButtonExist
-              ? Dimensions.get('window').width - 90
-              : Dimensions.get('window').width - 40,
+              ? Dimensions.get('window').width - 100
+              : Dimensions.get('window').width - 100,
           },
         ]}
         theme={{colors: {text: '#fff'}}}

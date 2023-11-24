@@ -6,10 +6,12 @@ import CardScroll from '../../components/CardScroll';
 import NewSaveButton from '../../components/NewSaveButton';
 import SaveFileButton from '../../components/SaveFileButton';
 import DefaultTextInput from '../../components/DefaultTextInput';
+import {getAuth} from 'firebase/auth'
 
 export default function SaveSelectionPage({route,navigation}) {
 
-  const { username } = route.params;
+  const auth = getAuth();
+  const user = auth.currentUser;
 
   const [saveFiles, setSaveFiles] = useState([
     {name: '123456789123456789123456789', id: 1},
@@ -38,7 +40,7 @@ export default function SaveSelectionPage({route,navigation}) {
 
   return (
     <View style={style.container}>
-      <Title name={username ? username : 'Account name'}></Title>
+      <Title name={user ? user.displayName : 'Account name'}></Title>
       <CardScroll style={style.card}>
         {saveFiles.map((item, index) => (
           <SaveFileButton

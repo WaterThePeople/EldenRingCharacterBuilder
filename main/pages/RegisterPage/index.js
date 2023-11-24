@@ -1,24 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Image } from 'react-native';
 import style from './RegisterPage.sass';
 import Card from '../../components/Card';
 import DefaultText from '../../components/DefaultText';
 import DefaultTextInput from '../../components/DefaultTextInput';
 import DefaultButton from '../../components/DefaultButton';
+import { auth } from '../../../firebase';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 
 export default function RegisterPage({ route, navigation }) {
 
-    const [userName, setUserName] = useState('')
-    const [password, setPassword] = useState('')
-    const [email, setEmail] = useState('')
+    const [userName, setUserName] = useState('');
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+
+    const [wrongRegister, setWrongRegister] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
 
     const goToLogin = (path) => {
         navigation.navigate(path);
     }
 
     const register = (path) => {
-        navigation.navigate(path);
+        handleRegister();
     }
+
+    const handleRegister = async () => {
+        try {
+            const { user } = await createUserWithEmailAndPassword(auth, email, password)
+            await updateProfile(user, {
+                displayName: userName
+            });
+            setWrongRegister(false)
+            navigation.navigate('LoginScreen');
+        } catch (error) {
+            console.log(error)
+            if(error.code==='auth/invalid-email')
+            {
+                setErrorMessage('Wrong email format!')
+            }
+            if(error.code==='auth/email-already-in-use')
+            {
+                setErrorMessage('Email already in use!')
+            }
+            if(error.code==='auth/weak-password')
+            {
+                setErrorMessage('Password too short (6 char min)!')
+            }
+            setWrongRegister(true)
+        }
+        finally {
+
+        }
+    }
+
+    useEffect(() => {
+        setWrongRegister(false)
+    }, [email, password, userName]);
 
     return (
         <Card style={style.card}>
@@ -32,6 +70,11 @@ export default function RegisterPage({ route, navigation }) {
                 <DefaultText numberOfLines={2} autoFont>Create your account!</DefaultText>
             </View>
             <View style={style.container}>
+                {wrongRegister && (
+                    <View style={style.error_container}>
+                        <DefaultText style={style.error_text} autoFont>{errorMessage}</DefaultText>
+                    </View>
+                )}
                 <View style={style.input_container}>
                     <DefaultTextInput
                         value={userName}
@@ -42,18 +85,18 @@ export default function RegisterPage({ route, navigation }) {
                 </View>
                 <View style={style.input_container}>
                     <DefaultTextInput
-                        value={password}
-                        onChange={setPassword}
-                        style={style.input}
-                        placeholder={'Password'}
-                    ></DefaultTextInput>
-                </View>
-                <View style={style.input_container}>
-                    <DefaultTextInput
                         value={email}
                         onChange={setEmail}
                         style={style.input}
                         placeholder={'Email'}
+                    ></DefaultTextInput>
+                </View>
+                <View style={style.input_container}>
+                    <DefaultTextInput
+                        value={password}
+                        onChange={setPassword}
+                        style={style.input}
+                        placeholder={'Password'}
                     ></DefaultTextInput>
                 </View>
             </View>
@@ -61,7 +104,7 @@ export default function RegisterPage({ route, navigation }) {
                 <DefaultButton
                     label={'Create account'}
                     styles={style.button}
-                    onClick={() => register('LoginScreen')}
+                    onClick={() => register()}
                 />
                 <DefaultText>or</DefaultText>
                 <DefaultButton
