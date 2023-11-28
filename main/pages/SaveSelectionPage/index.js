@@ -1,42 +1,57 @@
-import React, {useState} from 'react';
-import {View} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View } from 'react-native';
 import style from './SaveSelectionPage.sass';
 import Title from '../../components/Title';
 import CardScroll from '../../components/CardScroll';
 import NewSaveButton from '../../components/NewSaveButton';
 import SaveFileButton from '../../components/SaveFileButton';
 import DefaultTextInput from '../../components/DefaultTextInput';
-import {getAuth} from 'firebase/auth'
+import { getAuth } from 'firebase/auth'
+import { writeDataNewSave } from '../../../firebase';
+import { getData } from '../../../firebase';
 
-export default function SaveSelectionPage({route,navigation}) {
+export default function SaveSelectionPage({ route, navigation }) {
 
   const auth = getAuth();
   const user = auth.currentUser;
 
-  const [saveFiles, setSaveFiles] = useState([
-    {name: '123456789123456789123456789', id: 1},
-    {name: 'SAVE FILE 2', id: 2},
-    {name: 'Water The People testowanie obcinania znakow', id: 3},
-  ]);
+  const [saves, setSaves] = useState([])
+
+  const [saveFiles, setSaveFiles] = useState([]);
 
   const addSave = () => {
-    setSaveFiles(current => [
-      ...current,
-      {name: 'EMPTY SAVE FILE ', id: saveFiles.length + 1},
-    ]);
+    writeDataNewSave(
+      saves?.data?.length > 0 ? saves?.data?.length : 0,
+      user?.email,
+      saves?.data?.length > 0 ? saves?.data?.length : 0,
+      'SAVE FILE'
+    )
   };
 
-  const removeSave = id => {
-    setSaveFiles(saveFiles.filter(item => item.id !== id));
+  const removeSave = () => {
   };
 
-  const moveTo = (path,id,save,savesArray) => {
-    navigation.navigate(path, {
-      id: id,
-      save: save,
-      savesArray: savesArray,
-    });
+  const moveTo = (path, userEmail, arrayLength, saveName) => {
+    navigation.navigate(path,
+      {
+        save_name: saveName,
+        email: userEmail,
+        length: arrayLength,
+      });
   };
+
+  useEffect(() => {
+    getData('6', setSaves)
+  }, []);
+
+  useEffect(() => {
+    setSaveFiles([]);
+    saves?.data?.map((item) => {
+      if (user?.email === item?.user_email) {
+        setSaveFiles(saveFiles => [...saveFiles, item])
+      }
+    })
+  }, [saves]);
 
   return (
     <View style={style.container}>
@@ -44,10 +59,10 @@ export default function SaveSelectionPage({route,navigation}) {
       <CardScroll style={style.card}>
         {saveFiles.map((item, index) => (
           <SaveFileButton
-            label={item.name}
+            label={item.save_name}
             key={index}
-            onClick={() => moveTo('BuildSelectionScreen', item.id, item.name, saveFiles)}
-            onDelete={() => removeSave(item.id)}
+            onClick={() => moveTo('BuildSelectionScreen', user?.email, item?.save_id, item?.save_name)}
+            onDelete={() => removeSave()}
           />
         ))}
       </CardScroll>

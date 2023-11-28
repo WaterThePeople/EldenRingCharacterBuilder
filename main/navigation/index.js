@@ -25,7 +25,7 @@ function Navigation() {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName="LoginScreen"
+        initialRouteName="Loginscreen"
         >
         <Stack.Screen
           name="LoginScreen"

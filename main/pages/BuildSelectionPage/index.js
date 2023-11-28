@@ -1,38 +1,39 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View } from 'react-native';
 import style from './BuildSelectionPage.sass';
-import Title from '../../components/Title';
 import Card from '../../components/Card';
 import CategoryButton from '../../components/CategoryButton';
 import GoBackButton from '../../components/GoBackButton';
 import DefaultTextInput from '../../components/DefaultTextInput';
+import { writeDataEditSaveName } from '../../../firebase';
 
-export default function BuildSelectionPage({route, navigation}) {
-  const {save, savesArray, id} = route.params;
+export default function BuildSelectionPage({ route, navigation }) {
 
-  const [saveName, setSaveName] = useState(save);
+  const { save_name, email, length } = route.params;
+
+  const [saveName, setSaveName] = useState(save_name ? save_name : 'SAVENAME');
 
   const moveTo = path => {
     navigation.navigate(path);
   };
 
   const goBackFunction = path => {
-    navigation.navigate(path,{save: saveName});
+    navigation.navigate(path);
   };
 
   useEffect(() => {
-    savesArray.map((item,index)=>{
-      if(item.id === id){
-        item.name = saveName
-        console.log(item)
-      }
-    })
-  },[saveName]);
+    writeDataEditSaveName(
+      length,
+      email,
+      length,
+      saveName,
+    )
+  }, [saveName]);
 
   return (
     <View style={style.container}>
       <View style={style.title_container}>
-        <GoBackButton goBackFunction={()=>goBackFunction('SaveSelectionScreen')}/>
+        <GoBackButton goBackFunction={() => goBackFunction('SaveSelectionScreen')} />
         <DefaultTextInput style={style.text_input} goBackButtonExist value={saveName} onChange={setSaveName}></DefaultTextInput>
       </View>
       <Card style={style.card}>
