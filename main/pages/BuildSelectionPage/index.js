@@ -55,6 +55,14 @@ export default function BuildSelectionPage({ route, navigation }) {
       })
   };
 
+  const moveToWeapons = (save_id) => {
+    navigation.navigate('WeaponsScreen',
+      {
+        save_id: save_id,
+        save_weapons: save?.weapons ? save?.weapons : '',
+      })
+  };
+
   return (
     <View style={style.container}>
       <View style={style.title_container}>
@@ -72,6 +80,7 @@ export default function BuildSelectionPage({ route, navigation }) {
           icon={'weapons'}
           category={'Weapons'}
           styles={style.item}
+          onClick={() => moveToWeapons(saveID)}
         />
         <CategoryButton
           icon={'armor'}
