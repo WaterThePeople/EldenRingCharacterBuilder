@@ -5,50 +5,69 @@ import Title from '../../components/Title';
 import CardScroll from '../../components/CardScroll';
 import NewSaveButton from '../../components/NewSaveButton';
 import SaveFileButton from '../../components/SaveFileButton';
-import DefaultTextInput from '../../components/DefaultTextInput';
 import { getAuth } from 'firebase/auth'
-import { writeDataNewSave } from '../../../firebase';
-import { getData } from '../../../firebase';
+import { getSaves, createNewSave, removeSave } from '../../../firebase';
+import { useIsFocused } from "@react-navigation/native";
 
-export default function SaveSelectionPage({ route, navigation }) {
+export default function SaveSelectionPage({ navigation }) {
 
+  const isFocused = useIsFocused();
   const auth = getAuth();
   const user = auth.currentUser;
 
-  const [saves, setSaves] = useState([])
+  const [saves, setSaves] = useState([]);
 
   const [saveFiles, setSaveFiles] = useState([]);
 
+  const [lastID, setLastID] = useState(0);
+
+  const getData = async () => {
+    setSaves(await getSaves())
+  }
+
   const addSave = () => {
-    writeDataNewSave(
-      saves?.data?.length > 0 ? saves?.data?.length : 0,
+    createNewSave(
+      lastID,
       user?.email,
-      saves?.data?.length > 0 ? saves?.data?.length : 0,
-      'SAVE FILE'
+      'SAVE FILE',
     )
+    getData();
   };
 
-  const removeSave = () => {
-  };
+  const deleteSave = async (save_id) => {
+    try {
+      await removeSave(save_id);
+    }
+    catch (error) {
+      console.log(error)
+    }
+    finally {
+      getData();
+    }
+  }
 
-  const moveTo = (path, userEmail, arrayLength, saveName) => {
+  const moveTo = (path, saveFile) => {
     navigation.navigate(path,
       {
-        save_name: saveName,
-        email: userEmail,
-        length: arrayLength,
+        saveFile: saveFile,
       });
   };
 
   useEffect(() => {
-    getData('6', setSaves)
-  }, []);
+    if (isFocused) {
+      getData();
+    }
+  }, [isFocused]);
 
   useEffect(() => {
     setSaveFiles([]);
-    saves?.data?.map((item) => {
+    saves?.map((item, index) => {
       if (user?.email === item?.user_email) {
         setSaveFiles(saveFiles => [...saveFiles, item])
+      }
+      if(index+1===saves.length)
+      {
+        setLastID(saves[index].save_id+1)
       }
     })
   }, [saves]);
@@ -61,8 +80,8 @@ export default function SaveSelectionPage({ route, navigation }) {
           <SaveFileButton
             label={item.save_name}
             key={index}
-            onClick={() => moveTo('BuildSelectionScreen', user?.email, item?.save_id, item?.save_name)}
-            onDelete={() => removeSave()}
+            onClick={() => moveTo('BuildSelectionScreen', item?.save_id)}
+            onDelete={() => deleteSave(item?.save_id)}
           />
         ))}
       </CardScroll>

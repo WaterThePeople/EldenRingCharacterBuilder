@@ -9,26 +9,31 @@ import DefaultButton from '../../components/DefaultButton';
 import CardScroll from '../../components/CardScroll';
 import GoBackButton from '../../components/GoBackButton';
 import { Dimensions } from 'react-native';
-import { getData } from '../../../firebase';
+import { getData, selectClass } from '../../../firebase';
 
 export default function ClassPage({ route, navigation }) {
+
+  const { save_id, save_class } = route.params;
 
   const [classesData, setClassesData] = useState([])
   const [classesList, setClassesList] = useState([])
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [currentClass, setCurrentClass] = useState('');
 
-  const selectClassButton = (path) => {
-    navigation.navigate(path);
+  const selectClassButton = () => {
+    selectClass(save_id, currentClass);
+    navigation.goBack();
   };
 
-  const goBackFunction = (path) => {
-    navigation.navigate(path);
-  }
+  useEffect(() => {
+    getData('classes', setClassesData)
+  }, []);
 
   useEffect(() => {
-    getData('3', setClassesData)
-  }, []);
+    if (save_class) {
+      setCurrentClass(save_class)
+    }
+  }, [save_class]);
 
   useEffect(() => {
     setClassesList(classesData?.data?.map(a => a.class_name))
@@ -37,7 +42,7 @@ export default function ClassPage({ route, navigation }) {
   return (
     <View style={style.container}>
       <View style={style.title_container}>
-        <GoBackButton goBackFunction={() => goBackFunction('BuildSelectionScreen')} />
+        <GoBackButton goBackFunction={() => navigation.goBack()} />
         <SelectDropdown
           data={classesList}
           onSelect={(selectedItem, index) => {
@@ -46,7 +51,7 @@ export default function ClassPage({ route, navigation }) {
           buttonStyle={[style.dropdown_button, { width: Dimensions.get('window').width - 90 }]}
           buttonTextStyle={style.dropdown_button_text}
           dropdownStyle={style.dropdown}
-          defaultButtonText="Class name"
+          defaultButtonText={currentClass?.class_name ? currentClass?.class_name : "Class name"}
           rowStyle={style.dropdown_row}
           rowTextStyle={style.dropdown_row_text}
           statusBarTranslucent={true}

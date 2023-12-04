@@ -10,8 +10,8 @@ import { signInWithEmailAndPassword } from 'firebase/auth'
 
 export default function LoginPage({ route, navigation }) {
 
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState('test@gmail.com')
+    const [password, setPassword] = useState('pass123')
 
     const [wrongLogin, setWrongLogin] = useState(false)
 

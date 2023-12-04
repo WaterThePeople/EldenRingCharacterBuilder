@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, initializeAuth, getReactNativePersistence } from "firebase/auth";
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import { getDatabase, ref, onValue, set } from 'firebase/database';
+import { collection, getFirestore, getDocs, doc, getDoc, setDoc, updateDoc, deleteDoc } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: "AIzaSyAySr3W-pEHCC3_VhnbqZ5wkk8Jftps5HE",
@@ -21,6 +22,74 @@ const auth = initializeAuth(app, {
 
 const db = getDatabase(app);
 
+const firestore = getFirestore();
+
+const getSaves = async () => {
+  try {
+    const snapshot = await getDocs(collection(firestore, 'user_saves_list'))
+    const saves = snapshot.docs.map(doc => doc.data());
+    return saves
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const removeSave = async (save_id) => {
+  try {
+    const saveRef = doc(firestore, 'user_saves', save_id.toString())
+    const saveListRef = doc(firestore, 'user_saves_list', save_id.toString())
+
+    await deleteDoc(saveRef);
+    await deleteDoc(saveListRef);
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const getSave = async (save_id) => {
+  try {
+    const snapshot = doc(firestore, 'user_saves', save_id.toString())
+    const save = await getDoc(snapshot)
+    return save.data()
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const createNewSave = (save_id, user_email, save_name) => {
+  const savesRef = doc(firestore, 'user_saves', save_id.toString())
+  const savesListRef = doc(firestore, 'user_saves_list', save_id.toString())
+
+  setDoc(savesRef, {
+    save_id: save_id,
+    save_name: save_name,
+    user_email: user_email,
+  })
+
+  setDoc(savesListRef, {
+    save_id: save_id,
+    save_name: save_name,
+    user_email: user_email,
+  })
+}
+
+const editSaveName = (save_id, user_email, save_name) => {
+  const savesRef = doc(firestore, 'user_saves', save_id.toString())
+  const savesListRef = doc(firestore, 'user_saves_list', save_id.toString())
+
+  updateDoc(savesRef, {
+    save_id: save_id,
+    save_name: save_name,
+    user_email: user_email,
+  })
+
+  updateDoc(savesListRef, {
+    save_id: save_id,
+    save_name: save_name,
+    user_email: user_email,
+  })
+}
+
 const getData = (index, setState) => {
   const data = ref(db, index);
   onValue(data, (snapshot) => {
@@ -28,68 +97,13 @@ const getData = (index, setState) => {
   })
 }
 
-const writeData =
-  (
-    entry_id,
-    user_email,
-    save_id,
-    save_name,
-    class_name,
-    weapon_r1,
-    weapon_r2,
-    weapon_r3,
-    weapon_l1,
-    weapon_l2,
-    weapon_l3,
-    helm_slot,
-    armor_slot,
-    gauntlets_slot,
-    greaves_slot,
-    amulet_1,
-    amulet_2,
-    amulet_3,
-    amulet_4,
-  ) => {
-    set(ref(db, '6/data/' + entry_id),
-      {
-        user_email: user_email,
-        save_id: save_id,
-        save_name: save_name,
-        class_name: class_name,
-        weapon_r1: weapon_r1,
-        weapon_r2: weapon_r2,
-        weapon_r3: weapon_r3,
-        weapon_l1: weapon_l1,
-        weapon_l2: weapon_l2,
-        weapon_l3: weapon_l3,
-        helm_slot: helm_slot,
-        armor_slot: armor_slot,
-        gauntlets_slot: gauntlets_slot,
-        greaves_slot: greaves_slot,
-        amulet_1: amulet_1,
-        amulet_2: amulet_2,
-        amulet_3: amulet_3,
-        amulet_4: amulet_4,
-      })
-  }
+const selectClass = (save_id, array) => {
+  const savesRef = doc(firestore, 'user_saves', save_id.toString())
 
-const writeDataNewSave = (entry_id, user_email, save_id, save_name,) => {
-  set(ref(db, '6/data/' + entry_id),
-    {
-      user_email: user_email,
-      save_id: save_id,
-      save_name: save_name,
-    });
-}
-
-const writeDataEditSaveName = (entry_id, user_email, save_id, save_name,) => {
-  set(ref(db, '6/data/' + entry_id),
-    {
-      user_email: user_email,
-      save_id: save_id,
-      save_name: save_name,
-    });
+  updateDoc(savesRef, {
+    'class': array,
+  })
 }
 
 
-export { auth, db, getData, writeData, writeDataNewSave, writeDataEditSaveName };
+export { auth, db, getSaves, getSave, createNewSave, editSaveName, getData, selectClass, removeSave };
