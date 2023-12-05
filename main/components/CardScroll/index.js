@@ -2,7 +2,7 @@ import React from 'react';
 import {View, ScrollView} from 'react-native';
 import styles from './CardScroll.sass';
 
-function CardScroll(props) {
+export default function CardScroll(props) {
   return (
     <View style={[styles.container, props.container_style]}>
       <ScrollView
@@ -18,5 +18,3 @@ function CardScroll(props) {
     </View>
   );
 }
-
-export default CardScroll;

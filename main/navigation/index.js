@@ -8,7 +8,8 @@ import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import ClassPage from '../pages/ClassPage';
 import WeaponsPage from '../pages/WeaponsPage';
-import WeaponPage from '../pages/WeaponsPage/WeaponPage';
+import WeaponsList from '../pages/WeaponsPage/WeaponsList';
+import WeaponDetail from '../pages/WeaponsPage/WeaponsList/WeaponDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -54,8 +55,12 @@ function Navigation() {
           component={WeaponsPage}
         />
         <Stack.Screen
-          name="WeaponScreen"
-          component={WeaponPage}
+          name="WeaponsList"
+          component={WeaponsList}
+        />
+        <Stack.Screen
+          name="WeaponDetail"
+          component={WeaponDetail}
         />
       </Stack.Navigator>
     </NavigationContainer>

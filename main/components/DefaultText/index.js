@@ -1,17 +1,17 @@
 import React from 'react';
-import {Text} from 'react-native';
+import { Text } from 'react-native';
 
-export default function DefaultText({children, style, textClip, autoFont, numberOfLines=1}) {
+export default function DefaultText({ children, style, textClip, autoFont, numberOfLines = 1, color }) {
   return (
     <Text
       style={[
-        {fontFamily: 'GARAM', color: 'white', fontSize: 30},
+        { fontFamily: 'GARAM', color: (color ? color : 'white'), fontSize: 30 },
         style,
       ]}
       numberOfLines={numberOfLines}
       ellipsizeMode={textClip ? 'clip' : 'tail'}
-      adjustsFontSizeToFit = {autoFont}
-      >
+      adjustsFontSizeToFit={autoFont}
+    >
       {children}
     </Text>
   );
