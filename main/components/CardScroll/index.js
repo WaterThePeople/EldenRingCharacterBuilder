@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, ScrollView} from 'react-native';
+import { View, ScrollView } from 'react-native';
 import styles from './CardScroll.sass';
 
 export default function CardScroll(props) {
@@ -10,9 +10,10 @@ export default function CardScroll(props) {
         ref={ref => {
           this.scrollView = ref;
         }}
-        onContentSizeChange={() =>
-          this.scrollView.scrollToEnd({animated: true})
-        }>
+        // onContentSizeChange={() =>
+        //   this.scrollView.scrollToEnd({ animated: true })
+        // }
+        >
         <View style={props.style}>{props.children}</View>
       </ScrollView>
     </View>

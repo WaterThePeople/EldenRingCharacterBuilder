@@ -3,7 +3,7 @@
     flex-direction: column
     justify-content: flex-start
     align-items: flex-start
-    gap: 20px
+    gap: 10px
     height: 100%
     width: 100%
 
@@ -17,14 +17,18 @@
 .card_container
     background-color: black
     padding: 0
+    overflow: hidden
 
 .card
     display: flex
     flex-direction: column
     align-items: center
-    justify-content: center
-    gap: 10px
-    padding-top: 20px
+    justify-content: flex-start
+    padding-top: 10px
+
+.image_container
+    width: 200px
+    margin-bottom: 10px
 
 .image
     height: 200px
@@ -36,25 +40,30 @@
     justify-content: space-between
     background-color: #222222
     width: 100%
-    height: 150px
+    height: 100%
+    padding-bottom: 5px
     padding-top: 5px
 
-.attack
-    height: 150px
+.left
+    display: flex
+    justify-content: center
+    height: 100%
     padding-left: 10px
+    width: 60%
 
-.attack_stats
-    height: 120px
+.left_stats
     padding-left: 5px
     border: 2px solid #9B7A03
     border-width: 0 0 0 2px
 
-.guard
-    height: 150px
+.right
+    display: flex
+    justify-content: center
+    width: 40%
+    height: 100%
     padding-right: 10px
 
-.guard_stats
-    height: 120px
+.right_stats
     padding-left: 5px
     border: 2px solid #9B7A03
     border-width: 0 0 0 2px
@@ -65,6 +74,46 @@
     padding-right: 5px
 
 .text_color_container
+    font-size: 18px
     display: flex
     flex-direction: row
     gap: 4px
+
+.scaling_info
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    width: 100%
+    padding-bottom: 5px
+    padding-top: 5px
+
+.type_info
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    width: 100%
+    background-color: #222222
+    padding-bottom: 5px
+    padding-top: 5px
+
+.skill_info
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    width: 100%
+    padding-bottom: 5px
+    padding-top: 5px
+
+.passive_info
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    width: 100%
+    background-color: #222222
+    padding-bottom: 5px
+    padding-top: 5px
+
+.confirm_button
+    background-color: #786E39
+    text-align: center
+    border: 2px solid white
