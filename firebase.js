@@ -1,11 +1,11 @@
-import {initializeApp} from 'firebase/app';
+import { initializeApp } from 'firebase/app';
 import {
   getAuth,
   initializeAuth,
   getReactNativePersistence,
 } from 'firebase/auth';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
-import {getDatabase, ref, onValue, set} from 'firebase/database';
+import { getDatabase, ref, onValue, set } from 'firebase/database';
 import {
   collection,
   getFirestore,
@@ -145,14 +145,12 @@ const getCurrentWeapons = async (save_id) => {
   }
 };
 
-const deleteWeapon = async (save_id, hand) => {
-  try {
-    const saveRef = doc(firestore, hand, save_id.toString());
+const deleteWeapon = (save_id, hand) => {
+  const savesRef = doc(firestore, 'user_saves_weapons', save_id.toString());
 
-    await deleteDoc(saveRef);
-  } catch (error) {
-    console.log(error);
-  }
+  updateDoc(savesRef, {
+    [hand]: '',
+  });
 };
 
 export {
@@ -168,4 +166,5 @@ export {
   selectWeapon,
   getCurrentClass,
   getCurrentWeapons,
+  deleteWeapon,
 };

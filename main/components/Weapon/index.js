@@ -4,7 +4,7 @@ import style from './Weapon.sass';
 import DefaultText from '../DefaultText';
 import icons from '../../constantData/icons';
 
-export default function Weapon({ weapon_name, image_url, onClick }) {
+export default function Weapon({ weapon_name, image_url, onClick, isCurrentWeapon }) {
 
     iconSelect = (name) => {
         if (name === null) {
@@ -14,7 +14,7 @@ export default function Weapon({ weapon_name, image_url, onClick }) {
     }
 
     return (
-        <Pressable style={style.container} onPress={() => onClick()}>
+        <Pressable style={[style.container, isCurrentWeapon && style.current]} onPress={() => onClick()}>
             <View style={style.item_container}>
                 <Image
                     style={style.icon}

@@ -1,8 +1,8 @@
 import React from 'react';
-import style from './DeleteSaveButton.sass';
+import style from './DeleteItemButton.sass';
 import {View,Pressable} from 'react-native';
 
-export default function DeleteSaveButton({onDelete}) {
+export default function DeleteItemButton({onDelete}) {
   return (
     <Pressable style={style.container} onPress={onDelete}>
       <View style={style.delete_vertical}></View>

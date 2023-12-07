@@ -1,5 +1,5 @@
 import React from 'react';
-import {Pressable, Image, View} from 'react-native';
+import { Pressable, Image, View } from 'react-native';
 import style from './CategoryButtonItem.sass';
 import DefaultText from '../DefaultText';
 import icons from '../../constantData/icons';
@@ -10,6 +10,7 @@ export default function CategoryButtonItem({
   icon,
   onClick,
   image_url,
+  onRemove,
 }) {
   iconSelect = name => {
     if (name === null) {

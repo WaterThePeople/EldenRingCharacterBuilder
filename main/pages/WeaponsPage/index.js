@@ -43,13 +43,14 @@ export default function WeaponsPage({route, navigation}) {
     setWeapon_l3(currentWeapons?.weapon_l3);
   }, [currentWeapons]);
 
-  const moveToWeapon = (category_image, category_name, hand) => {
+  const moveToWeapon = (category_image, category_name, hand, current_weapon) => {
     navigation.navigate('WeaponsList', {
       category_name: category_name,
       category_image: category_image,
       hand: hand,
       weapons: weapons ? weapons?.data : [],
       save_id: save_id,
+      current_weapon: current_weapon,
     });
   };
 
@@ -69,7 +70,7 @@ export default function WeaponsPage({route, navigation}) {
           category={weapon_r1?.weapon_name ? weapon_r1?.weapon_name : 'Empty'}
           styles={style.item}
           onClick={() =>
-            moveToWeapon('right_hand', 'Right hand 1', 'weapon_r1')
+            moveToWeapon('right_hand', 'Right hand 1', 'weapon_r1',weapon_r1)
           }
         />
         <CategoryButtonItem
@@ -77,7 +78,7 @@ export default function WeaponsPage({route, navigation}) {
           image_url={weapon_l1 && weapon_l1?.image_url}
           category={weapon_l1?.weapon_name ? weapon_l1?.weapon_name : 'Empty'}
           styles={style.item}
-          onClick={() => moveToWeapon('left_hand', 'Left hand 1', 'weapon_l1')}
+          onClick={() => moveToWeapon('left_hand', 'Left hand 1', 'weapon_l1',weapon_l1)}
         />
         <CategoryButtonItem
           icon={!weapon_r2 && 'right_hand'}
@@ -85,7 +86,7 @@ export default function WeaponsPage({route, navigation}) {
           category={weapon_r2?.weapon_name ? weapon_r2?.weapon_name : 'Empty'}
           styles={style.item}
           onClick={() =>
-            moveToWeapon('right_hand', 'Right hand 2', 'weapon_r2')
+            moveToWeapon('right_hand', 'Right hand 2', 'weapon_r2',weapon_r2)
           }
         />
         <CategoryButtonItem
@@ -93,7 +94,7 @@ export default function WeaponsPage({route, navigation}) {
           image_url={weapon_l2 && weapon_l2?.image_url}
           category={weapon_l2?.weapon_name ? weapon_l2?.weapon_name : 'Empty'}
           styles={style.item}
-          onClick={() => moveToWeapon('left_hand', 'Left hand 2', 'weapon_l2')}
+          onClick={() => moveToWeapon('left_hand', 'Left hand 2', 'weapon_l2',weapon_l2)}
         />
         <CategoryButtonItem
           icon={!weapon_r3 && 'right_hand'}
@@ -101,7 +102,7 @@ export default function WeaponsPage({route, navigation}) {
           category={weapon_r3?.weapon_name ? weapon_r3?.weapon_name : 'Empty'}
           styles={style.item}
           onClick={() =>
-            moveToWeapon('right_hand', 'Right hand 3', 'weapon_r3')
+            moveToWeapon('right_hand', 'Right hand 3', 'weapon_r3',weapon_r3)
           }
         />
         <CategoryButtonItem
@@ -109,7 +110,7 @@ export default function WeaponsPage({route, navigation}) {
           image_url={weapon_l3 && weapon_l3?.image_url}
           category={weapon_l3?.weapon_name ? weapon_l3?.weapon_name : 'Empty'}
           styles={style.item}
-          onClick={() => moveToWeapon('left_hand', 'Left hand 3', 'weapon_l3')}
+          onClick={() => moveToWeapon('left_hand', 'Left hand 3', 'weapon_l3',weapon_l3)}
         />
       </Card>
     </View>
