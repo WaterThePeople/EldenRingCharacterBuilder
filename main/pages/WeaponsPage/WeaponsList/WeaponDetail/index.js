@@ -9,7 +9,7 @@ import DefaultButton from '../../../../components/DefaultButton';
 import {selectWeapon} from '../../../../../firebase';
 
 export default function WeaponDetail({route, navigation}) {
-  const {weapon, hand, save_id, setWeapon} = route.params;
+  const {weapon, hand, save_id} = route.params;
 
   const checkIfPassiveEmpty = () => {
     if (weapon?.weapon_bleed > 0) return false;
@@ -22,12 +22,10 @@ export default function WeaponDetail({route, navigation}) {
   };
 
   const confirmWeapon = () => {
-    setWeapon(weapon)
     selectWeapon(save_id, hand, weapon);
     navigation.pop(2);
   };
 
-  console.log(hand)
 
   return (
     <View style={style.container}>

@@ -52,9 +52,11 @@ const removeSave = async save_id => {
   try {
     const saveRef = doc(firestore, 'user_saves', save_id.toString());
     const classesRef = doc(firestore, 'user_saves_classes', save_id.toString());
+    const weaponsRef = doc(firestore, 'user_saves_weapons', save_id.toString());
 
     await deleteDoc(saveRef);
     await deleteDoc(classesRef);
+    await deleteDoc(weaponsRef);
   } catch (error) {
     console.log(error);
   }
@@ -73,6 +75,8 @@ const getSave = async save_id => {
 const createNewSave = (save_id, user_email, save_name) => {
   const savesRef = doc(firestore, 'user_saves', save_id.toString());
   const classesRef = doc(firestore, 'user_saves_classes', save_id.toString());
+  const weaponsRef = doc(firestore, 'user_saves_weapons', save_id.toString());
+
 
   setDoc(savesRef, {
     save_id: save_id,
@@ -81,6 +85,9 @@ const createNewSave = (save_id, user_email, save_name) => {
   });
 
   setDoc(classesRef, {
+    save_id: save_id,
+  });
+  setDoc(weaponsRef, {
     save_id: save_id,
   });
 };
@@ -113,19 +120,29 @@ const selectClass = (save_id, array) => {
 const getCurrentClass = async save_id => {
   try {
     const snapshot = doc(firestore, 'user_saves_classes', save_id.toString());
-    const save = await getDoc(snapshot);
-    return save.data().class;
+    const data = await getDoc(snapshot);
+    return data.data().class;
   } catch (error) {
     console.log(error);
   }
 };
 
 const selectWeapon = (save_id, hand, array) => {
-  const savesRef = doc(firestore, 'user_saves', save_id.toString());
+  const savesRef = doc(firestore, 'user_saves_weapons', save_id.toString());
 
   updateDoc(savesRef, {
     [hand]: array,
   });
+};
+
+const getCurrentWeapons = async (save_id) => {
+  try {
+    const snapshot = doc(firestore, 'user_saves_weapons', save_id.toString());
+    const data = await getDoc(snapshot);
+    return data.data();
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const deleteWeapon = async (save_id, hand) => {
@@ -150,4 +167,5 @@ export {
   removeSave,
   selectWeapon,
   getCurrentClass,
+  getCurrentWeapons,
 };

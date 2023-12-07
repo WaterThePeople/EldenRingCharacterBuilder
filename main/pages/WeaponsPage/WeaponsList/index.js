@@ -8,7 +8,7 @@ import Weapon from '../../../components/Weapon';
 
 export default function WeaponsList({ route, navigation }) {
 
-    const { category_name, category_image, weapons, save_id, hand, setWeapon } = route.params;
+    const { category_name, category_image, weapons, save_id, hand} = route.params;
 
     const moveToWeaponDetail = (weapon) => {
         navigation.navigate('WeaponDetail',
@@ -16,7 +16,6 @@ export default function WeaponsList({ route, navigation }) {
                 weapon: weapon,
                 hand: hand,
                 save_id: save_id,
-                setWeapon: setWeapon
             })
     };
 
