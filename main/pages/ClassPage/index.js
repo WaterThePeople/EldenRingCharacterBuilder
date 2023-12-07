@@ -9,11 +9,11 @@ import DefaultButton from '../../components/DefaultButton';
 import CardScroll from '../../components/CardScroll';
 import GoBackButton from '../../components/GoBackButton';
 import { Dimensions } from 'react-native';
-import { getData, selectClass } from '../../../firebase';
+import { getData, selectClass, getCurrentClass } from '../../../firebase';
 
 export default function ClassPage({ route, navigation }) {
 
-  const { save_id, save_class } = route.params;
+  const { save_id } = route.params;
 
   const [classesData, setClassesData] = useState([])
   const [classesList, setClassesList] = useState([])
@@ -25,15 +25,14 @@ export default function ClassPage({ route, navigation }) {
     navigation.goBack();
   };
 
-  useEffect(() => {
-    getData('classes', setClassesData)
-  }, []);
+  const getCurrentClassData = async () => {
+    setCurrentClass(await getCurrentClass(save_id));
+  };
 
   useEffect(() => {
-    if (save_class) {
-      setCurrentClass(save_class)
-    }
-  }, [save_class]);
+    getData('classes', setClassesData)
+    getCurrentClassData()
+  }, []);
 
   useEffect(() => {
     setClassesList(classesData?.data?.map(a => a.class_name))
