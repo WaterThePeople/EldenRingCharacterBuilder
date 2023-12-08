@@ -33,7 +33,7 @@ export default function CategoryButtonItem({
         </View>
       )}
       {icon && <Image style={style.icon} source={iconSelect(icon)} />}
-      <DefaultText style={style.text} autoFont>
+      <DefaultText style={style.text} autoFont numberOfLines={2}>
         {category}
       </DefaultText>
     </Pressable>
