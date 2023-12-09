@@ -10,6 +10,7 @@ export default function DefaultTextInput({
   onChange,
   placeholder,
   goBackButtonExist,
+  buttonSize = 90,
 }) {
   return (
     <>
@@ -19,8 +20,8 @@ export default function DefaultTextInput({
           style,
           {
             width: goBackButtonExist
-              ? Dimensions.get('window').width - 90
-              : Dimensions.get('window').width - 90,
+              ? Dimensions.get('window').width - buttonSize
+              : Dimensions.get('window').width - buttonSize,
           },
         ]}
         theme={{colors: {text: '#fff'}}}

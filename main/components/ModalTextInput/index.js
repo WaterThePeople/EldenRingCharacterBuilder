@@ -1,10 +1,11 @@
 import React from 'react';
-import style from './ModalConfirm.sass';
+import style from './ModalTextInput.sass';
 import { View, Modal, Pressable } from 'react-native';
 import DefaultButton from '../DefaultButton';
 import DefaultText from '../DefaultText';
+import DefaultTextInput from '../DefaultTextInput';
 
-export default function ModalConfirm(
+export default function ModalTextInput(
     {
         visible,
         setVisible,
@@ -14,7 +15,12 @@ export default function ModalConfirm(
         confirmLabel,
         declineLabel,
         confirmColor,
-        declineColor
+        declineColor,
+        inputPlaceholder,
+        inputValue,
+        setInputValue,
+        errorMessage,
+        errorVisible,
     }
 ) {
     return (
@@ -30,11 +36,29 @@ export default function ModalConfirm(
                         <View style={style.close_horizontal}></View>
                     </Pressable>
                     <View style={style.content}>
+
+                        {errorVisible && (
+                            <View style={style.error_container}>
+                                <DefaultText style={style.error_text} autoFont>{errorMessage}</DefaultText>
+                            </View>
+                        )}
+
+                        <View style={style.input_row}>
+                            <DefaultTextInput
+                                style={style.input_text}
+                                buttonSize={65}
+                                placeholder={inputPlaceholder}
+                                value={inputValue}
+                                onChange={setInputValue}
+                            />
+                        </View>
+
                         <View style={style.text_row}>
                             <DefaultText style={style.text} numberOfLines={2} autoFont>
                                 {text}
                             </DefaultText>
                         </View>
+
                         <View style={style.button_row}>
                             {onConfirm && (
                                 <DefaultButton label={confirmLabel} styles={[style.confirm, { backgroundColor: confirmColor }]} onClick={onConfirm} />

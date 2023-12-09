@@ -25,8 +25,11 @@ export default function LandingPage() {
     }
 
     const logout = () => {
-        //navigation.navigate('LoginScreen');
         setModalVisible(true)
+    }
+
+    const onLogoutConfirm = () => {
+        navigation.navigate('LoginScreen');
     }
 
     return (
@@ -82,8 +85,14 @@ export default function LandingPage() {
             <ModalConfirm
                 visible={modalVisible}
                 setVisible={setModalVisible}
-            >
-            </ModalConfirm>
+                text={'Are you sure you want to logout?'}
+                onDecline={() => setModalVisible(false)}
+                onConfirm={onLogoutConfirm}
+                confirmLabel={'Yes'}
+                declineLabel={'No'}
+                confirmColor={'green'}
+                declineColor={'red'}
+            />
         </>
     );
 }
