@@ -1,8 +1,8 @@
 import React from 'react';
-import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import SaveSelectionPage from '../pages/SaveSelectionPage';
+import HomePage from '../pages/HomePage';
 import BuildSelectionPage from '../pages/BuildSelectionPage';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
@@ -28,8 +28,8 @@ function Navigation() {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName="Loginscreen"
-        >
+        initialRouteName="LoginScreen"
+      >
         <Stack.Screen
           name="LoginScreen"
           component={LoginPage}
@@ -39,8 +39,9 @@ function Navigation() {
           component={RegisterPage}
         />
         <Stack.Screen
-          name="SaveSelectionScreen"
-          component={SaveSelectionPage}
+          name="HomeScreen"
+          component={HomePage}
+          options={{gestureEnabled: false}}
         />
         <Stack.Screen
           name="BuildSelectionScreen"

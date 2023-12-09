@@ -1,17 +1,17 @@
-import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View } from 'react-native';
 import style from './BuildSelectionPage.sass';
 import Card from '../../components/Card';
 import CategoryButton from '../../components/CategoryButton';
 import GoBackButton from '../../components/GoBackButton';
 import DefaultTextInput from '../../components/DefaultTextInput';
-import {editSaveName, getCurrentClass} from '../../../firebase';
-import {getSave} from '../../../firebase';
-import {useIsFocused} from '@react-navigation/native';
+import { editSaveName } from '../../../firebase';
+import { getSave } from '../../../firebase';
+import { useIsFocused } from '@react-navigation/native';
 
-export default function BuildSelectionPage({route, navigation}) {
+export default function BuildSelectionPage({ route, navigation }) {
   const isFocused = useIsFocused();
-  const {saveFile} = route.params;
+  const { saveFile } = route.params;
 
   const [save, setSave] = useState([]);
 
@@ -55,20 +55,21 @@ export default function BuildSelectionPage({route, navigation}) {
           style={style.text_input}
           goBackButtonExist
           value={saveName}
-          onChange={setSaveName}></DefaultTextInput>
+          onChange={setSaveName}>
+        </DefaultTextInput>
       </View>
       <Card style={style.card}>
         <CategoryButton
           icon={'class'}
           category={'Class'}
           styles={style.item}
-          onClick={() => moveToScreen(saveID,'ClassScreen')}
+          onClick={() => moveToScreen(saveID, 'ClassScreen')}
         />
         <CategoryButton
           icon={'weapons'}
           category={'Weapons'}
           styles={style.item}
-          onClick={() => moveToScreen(saveID,'WeaponsScreen')}
+          onClick={() => moveToScreen(saveID, 'WeaponsScreen')}
         />
         <CategoryButton icon={'armor'} category={'Armor'} styles={style.item} />
         <CategoryButton

@@ -7,11 +7,14 @@ import DefaultTextInput from '../../components/DefaultTextInput';
 import DefaultButton from '../../components/DefaultButton';
 import { auth } from '../../../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth'
+import { useIsFocused } from '@react-navigation/native';
 
 export default function LoginPage({ route, navigation }) {
 
-    const [email, setEmail] = useState('test@gmail.com')
-    const [password, setPassword] = useState('pass123')
+    const isFocused = useIsFocused();
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
     const [wrongLogin, setWrongLogin] = useState(false)
 
@@ -26,7 +29,7 @@ export default function LoginPage({ route, navigation }) {
     const handleLogin = async () => {
         try {
             const response = await signInWithEmailAndPassword(auth, email, password)
-            navigation.navigate('SaveSelectionScreen');
+            navigation.navigate('HomeScreen');
             setWrongLogin(false)
         } catch (error) {
             setWrongLogin(true)
@@ -40,6 +43,13 @@ export default function LoginPage({ route, navigation }) {
     useEffect(() => {
         setWrongLogin(false)
     }, [email, password]);
+
+    useEffect(() => {
+        if (isFocused) {
+            setEmail('test@gmail.com')
+            setPassword('pass123')
+        }
+    }, [isFocused]);
 
     return (
         <Card style={style.card}>
