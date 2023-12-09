@@ -61,17 +61,18 @@ export default function LandingPage() {
                         <DefaultText numberOfLines={0} style={style.text_style_bottom}>
                             App created and developed by:
                         </DefaultText>
-                        <DefaultText style={style.text_style_bottom}>
-                            Maksymilian Skrzypczak
+                        <DefaultText numberOfLines={0} style={style.text_style_bottom}>
+                            Maksymilian Skrzypczak,
                         </DefaultText>
-                        <DefaultText style={style.text_style_bottom}>
+                        <DefaultText numberOfLines={0} style={style.text_style_bottom}>
                             Tomasz Bogusławski
                         </DefaultText>
                     </View>
                     <Pressable
+                        style={style.button}
                         onPress={() => logout()}>
                         <View style={style.button_container}>
-                            <DefaultText>
+                            <DefaultText autoFont={true}>
                                 Logout
                             </DefaultText>
                             <Image
