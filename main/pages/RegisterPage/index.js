@@ -8,10 +8,12 @@ import DefaultButton from '../../components/DefaultButton';
 import { auth } from '../../../firebase';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import ModalConfirm from '../../components/ModalConfirm';
+import LoaderFullScreen from '../../components/LoaderFullScreen';
 
 export default function RegisterPage({ route, navigation }) {
 
     const [modalVisible, setModalVisible] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
@@ -29,6 +31,7 @@ export default function RegisterPage({ route, navigation }) {
     }
 
     const handleRegister = async () => {
+        setIsLoading(true)
         try {
             const { user } = await createUserWithEmailAndPassword(auth, email, password)
             await updateProfile(user, {
@@ -53,7 +56,7 @@ export default function RegisterPage({ route, navigation }) {
             setWrongRegister(true)
         }
         finally {
-
+            setIsLoading(false)
         }
     }
 
@@ -130,6 +133,9 @@ export default function RegisterPage({ route, navigation }) {
                 confirmColor={'#4ac0ff'}
                 confirmLabel={'Go to Login'}
             />
+            {isLoading && (
+                <LoaderFullScreen visible={isLoading} />
+            )}
         </>
     );
 }

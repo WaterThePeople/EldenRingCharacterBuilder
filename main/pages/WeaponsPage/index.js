@@ -1,16 +1,18 @@
-import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View } from 'react-native';
 import style from './WeaponsPage.sass';
 import GoBackButton from '../../components/GoBackButton';
 import CategoryTitle from '../../components/CategoryTitle';
 import CategoryButtonItem from '../../components/CategoryButtonItem';
 import Card from '../../components/Card';
-import {getData, getCurrentWeapons} from '../../../firebase';
-import {useIsFocused} from '@react-navigation/native';
+import { getData, getCurrentWeapons } from '../../../firebase';
+import { useIsFocused } from '@react-navigation/native';
+import Loader from '../../components/Loader';
 
-export default function WeaponsPage({route, navigation}) {
+export default function WeaponsPage({ route, navigation }) {
   const isFocused = useIsFocused();
-  const {save_id} = route.params;
+  const [isLoading, setIsLoading] = useState(false)
+  const { save_id } = route.params;
 
   const [weapons, setWeapons] = useState([]);
 
@@ -25,10 +27,12 @@ export default function WeaponsPage({route, navigation}) {
 
   const getCurrentWeaponsData = async () => {
     setCurrentWeapons(await getCurrentWeapons(save_id));
+    setIsLoading(false)
   };
 
   useEffect(() => {
     if (isFocused) {
+      setIsLoading(true)
       getData('weapons', setWeapons);
       getCurrentWeaponsData();
     }
@@ -63,56 +67,62 @@ export default function WeaponsPage({route, navigation}) {
           name={'Weapons'}
           goBackButtonExist></CategoryTitle>
       </View>
-      <Card style={style.card}>
-        <CategoryButtonItem
-          icon={!weapon_r1 && 'right_hand'}
-          image_url={weapon_r1 && weapon_r1?.image_url}
-          category={weapon_r1?.weapon_name ? weapon_r1?.weapon_name : 'Empty'}
-          styles={style.item}
-          onClick={() =>
-            moveToWeapon('right_hand', 'Right hand 1', 'weapon_r1',weapon_r1)
-          }
-        />
-        <CategoryButtonItem
-          icon={!weapon_l1 && 'left_hand'}
-          image_url={weapon_l1 && weapon_l1?.image_url}
-          category={weapon_l1?.weapon_name ? weapon_l1?.weapon_name : 'Empty'}
-          styles={style.item}
-          onClick={() => moveToWeapon('left_hand', 'Left hand 1', 'weapon_l1',weapon_l1)}
-        />
-        <CategoryButtonItem
-          icon={!weapon_r2 && 'right_hand'}
-          image_url={weapon_r2 && weapon_r2?.image_url}
-          category={weapon_r2?.weapon_name ? weapon_r2?.weapon_name : 'Empty'}
-          styles={style.item}
-          onClick={() =>
-            moveToWeapon('right_hand', 'Right hand 2', 'weapon_r2',weapon_r2)
-          }
-        />
-        <CategoryButtonItem
-          icon={!weapon_l2 && 'left_hand'}
-          image_url={weapon_l2 && weapon_l2?.image_url}
-          category={weapon_l2?.weapon_name ? weapon_l2?.weapon_name : 'Empty'}
-          styles={style.item}
-          onClick={() => moveToWeapon('left_hand', 'Left hand 2', 'weapon_l2',weapon_l2)}
-        />
-        <CategoryButtonItem
-          icon={!weapon_r3 && 'right_hand'}
-          image_url={weapon_r3 && weapon_r3?.image_url}
-          category={weapon_r3?.weapon_name ? weapon_r3?.weapon_name : 'Empty'}
-          styles={style.item}
-          onClick={() =>
-            moveToWeapon('right_hand', 'Right hand 3', 'weapon_r3',weapon_r3)
-          }
-        />
-        <CategoryButtonItem
-          icon={!weapon_l3 && 'left_hand'}
-          image_url={weapon_l3 && weapon_l3?.image_url}
-          category={weapon_l3?.weapon_name ? weapon_l3?.weapon_name : 'Empty'}
-          styles={style.item}
-          onClick={() => moveToWeapon('left_hand', 'Left hand 3', 'weapon_l3',weapon_l3)}
-        />
-      </Card>
+      {!isLoading ? (
+        <Card style={style.card}>
+          <CategoryButtonItem
+            icon={!weapon_r1 && 'right_hand'}
+            image_url={weapon_r1 && weapon_r1?.image_url}
+            category={weapon_r1?.weapon_name ? weapon_r1?.weapon_name : 'Empty'}
+            styles={style.item}
+            onClick={() =>
+              moveToWeapon('right_hand', 'Right hand 1', 'weapon_r1', weapon_r1)
+            }
+          />
+          <CategoryButtonItem
+            icon={!weapon_l1 && 'left_hand'}
+            image_url={weapon_l1 && weapon_l1?.image_url}
+            category={weapon_l1?.weapon_name ? weapon_l1?.weapon_name : 'Empty'}
+            styles={style.item}
+            onClick={() => moveToWeapon('left_hand', 'Left hand 1', 'weapon_l1', weapon_l1)}
+          />
+          <CategoryButtonItem
+            icon={!weapon_r2 && 'right_hand'}
+            image_url={weapon_r2 && weapon_r2?.image_url}
+            category={weapon_r2?.weapon_name ? weapon_r2?.weapon_name : 'Empty'}
+            styles={style.item}
+            onClick={() =>
+              moveToWeapon('right_hand', 'Right hand 2', 'weapon_r2', weapon_r2)
+            }
+          />
+          <CategoryButtonItem
+            icon={!weapon_l2 && 'left_hand'}
+            image_url={weapon_l2 && weapon_l2?.image_url}
+            category={weapon_l2?.weapon_name ? weapon_l2?.weapon_name : 'Empty'}
+            styles={style.item}
+            onClick={() => moveToWeapon('left_hand', 'Left hand 2', 'weapon_l2', weapon_l2)}
+          />
+          <CategoryButtonItem
+            icon={!weapon_r3 && 'right_hand'}
+            image_url={weapon_r3 && weapon_r3?.image_url}
+            category={weapon_r3?.weapon_name ? weapon_r3?.weapon_name : 'Empty'}
+            styles={style.item}
+            onClick={() =>
+              moveToWeapon('right_hand', 'Right hand 3', 'weapon_r3', weapon_r3)
+            }
+          />
+          <CategoryButtonItem
+            icon={!weapon_l3 && 'left_hand'}
+            image_url={weapon_l3 && weapon_l3?.image_url}
+            category={weapon_l3?.weapon_name ? weapon_l3?.weapon_name : 'Empty'}
+            styles={style.item}
+            onClick={() => moveToWeapon('left_hand', 'Left hand 3', 'weapon_l3', weapon_l3)}
+          />
+        </Card>
+      ) : (
+        <Card style={style.card_loading}>
+          <Loader />
+        </Card>
+      )}
     </View>
   );
 }

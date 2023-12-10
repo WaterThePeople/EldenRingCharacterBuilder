@@ -11,10 +11,12 @@ export default function DefaultTextInput({
   placeholder,
   goBackButtonExist,
   buttonSize = 90,
+  maxLength = 100,
 }) {
   return (
     <>
       <TextInput
+        maxLength={maxLength}
         style={[
           {fontFamily: 'GARAM', color: 'white', fontSize: 30},
           style,

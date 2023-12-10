@@ -10,10 +10,14 @@ import CardScroll from '../../components/CardScroll';
 import GoBackButton from '../../components/GoBackButton';
 import { Dimensions } from 'react-native';
 import { getData, selectClass, getCurrentClass } from '../../../firebase';
+import Loader from '../../components/Loader';
+import Card from '../../components/Card';
 
 export default function ClassPage({ route, navigation }) {
 
   const { save_id } = route.params;
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const [classesData, setClassesData] = useState([])
   const [classesList, setClassesList] = useState([])
@@ -27,9 +31,11 @@ export default function ClassPage({ route, navigation }) {
 
   const getCurrentClassData = async () => {
     setCurrentClass(await getCurrentClass(save_id));
+    setIsLoading(false)
   };
 
   useEffect(() => {
+    setIsLoading(true)
     getData('classes', setClassesData)
     getCurrentClassData()
   }, []);
@@ -42,71 +48,83 @@ export default function ClassPage({ route, navigation }) {
     <View style={style.container}>
       <View style={style.title_container}>
         <GoBackButton goBackFunction={() => navigation.goBack()} />
-        <SelectDropdown
-          data={classesList}
-          onSelect={(selectedItem, index) => {
-            setCurrentClass(classesData?.data?.[index]);
-          }}
-          buttonStyle={[style.dropdown_button, { width: Dimensions.get('window').width - 90 }]}
-          buttonTextStyle={style.dropdown_button_text}
-          dropdownStyle={style.dropdown}
-          defaultButtonText={currentClass?.class_name ? currentClass?.class_name : "Class name"}
-          rowStyle={style.dropdown_row}
-          rowTextStyle={style.dropdown_row_text}
-          statusBarTranslucent={true}
-          renderDropdownIcon={() => DropdownIcon(isDropdownOpen)}
-          dropdownOverlayColor={'none'}
-          onFocus={() => setIsDropdownOpen(true)}
-          onBlur={() => setIsDropdownOpen(false)}
-        />
+        {isLoading ? (
+          <Card style={style.card_loading}>
+            <Loader size={50} />
+          </Card>
+        ) : (
+          <SelectDropdown
+            data={classesList}
+            onSelect={(selectedItem, index) => {
+              setCurrentClass(classesData?.data?.[index]);
+            }}
+            buttonStyle={[style.dropdown_button, { width: Dimensions.get('window').width - 90 }]}
+            buttonTextStyle={style.dropdown_button_text}
+            dropdownStyle={style.dropdown}
+            defaultButtonText={currentClass?.class_name ? currentClass?.class_name : ""}
+            rowStyle={style.dropdown_row}
+            rowTextStyle={style.dropdown_row_text}
+            statusBarTranslucent={true}
+            renderDropdownIcon={() => DropdownIcon(isDropdownOpen)}
+            dropdownOverlayColor={'none'}
+            onFocus={() => setIsDropdownOpen(true)}
+            onBlur={() => setIsDropdownOpen(false)}
+          />
+        )}
       </View>
-      <CardScroll container_style={style.card_container} style={style.card}>
-        <ClassStatInfo
-          stat={'Level'}
-          value={currentClass ? currentClass.class_level : '0'}
-        />
-        <View style={style.tip_container}>
-          <DefaultText style={style.tip_text}>Stat</DefaultText>
-          <DefaultText style={style.tip_text}>Initial amount</DefaultText>
-        </View>
-        <ClassStatInfo
-          stat={'Vigor'}
-          value={currentClass ? currentClass.class_vigor : '0'}
-        />
-        <ClassStatInfo
-          stat={'Mind'}
-          value={currentClass ? currentClass.class_mind : '0'}
-        />
-        <ClassStatInfo
-          stat={'Endurance'}
-          value={currentClass ? currentClass.class_endurance : '0'}
-        />
-        <ClassStatInfo
-          stat={'Strength'}
-          value={currentClass ? currentClass.class_strength : '0'}
-        />
-        <ClassStatInfo
-          stat={'Dexterity'}
-          value={currentClass ? currentClass.class_dexterity : '0'}
-        />
-        <ClassStatInfo
-          stat={'Intelligence'}
-          value={currentClass ? currentClass.class_intelligence : '0'}
-        />
-        <ClassStatInfo
-          stat={'Faith'}
-          value={currentClass ? currentClass.class_faith : '0'}
-        />
-        <ClassStatInfo
-          stat={'Arcane'}
-          value={currentClass ? currentClass.class_arcane : '0'}
-        />
-      </CardScroll>
+      {!isLoading ? (
+        <CardScroll container_style={style.card_container} style={style.card}>
+          <ClassStatInfo
+            stat={'Level'}
+            value={currentClass ? currentClass.class_level : '0'}
+          />
+          <View style={style.tip_container}>
+            <DefaultText style={style.tip_text}>Stat</DefaultText>
+            <DefaultText style={style.tip_text}>Initial amount</DefaultText>
+          </View>
+          <ClassStatInfo
+            stat={'Vigor'}
+            value={currentClass ? currentClass.class_vigor : '0'}
+          />
+          <ClassStatInfo
+            stat={'Mind'}
+            value={currentClass ? currentClass.class_mind : '0'}
+          />
+          <ClassStatInfo
+            stat={'Endurance'}
+            value={currentClass ? currentClass.class_endurance : '0'}
+          />
+          <ClassStatInfo
+            stat={'Strength'}
+            value={currentClass ? currentClass.class_strength : '0'}
+          />
+          <ClassStatInfo
+            stat={'Dexterity'}
+            value={currentClass ? currentClass.class_dexterity : '0'}
+          />
+          <ClassStatInfo
+            stat={'Intelligence'}
+            value={currentClass ? currentClass.class_intelligence : '0'}
+          />
+          <ClassStatInfo
+            stat={'Faith'}
+            value={currentClass ? currentClass.class_faith : '0'}
+          />
+          <ClassStatInfo
+            stat={'Arcane'}
+            value={currentClass ? currentClass.class_arcane : '0'}
+          />
+        </CardScroll>
+      ) : (
+        <Card style={style.card_class_loading}>
+          <Loader />
+        </Card>
+      )}
       <DefaultButton
         styles={style.confirm_button}
         label={'Select class'}
         onClick={() =>
-          selectClassButton('BuildSelectionScreen')
+          !isLoading && selectClassButton('BuildSelectionScreen')
         }
       />
     </View>

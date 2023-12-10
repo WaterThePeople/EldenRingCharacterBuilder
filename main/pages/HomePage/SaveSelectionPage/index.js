@@ -11,9 +11,12 @@ import { useIsFocused } from "@react-navigation/native";
 import { useNavigation } from '@react-navigation/native';
 import ModalConfirm from '../../../components/ModalConfirm';
 import ModalTextInput from '../../../components/ModalTextInput';
+import Loader from '../../../components/Loader';
+import Card from '../../../components/Card';
 
 export default function SaveSelectionPage() {
 
+  const [isLoading, setIsLoading] = useState(false)
   const [modalVisible, setModalVisible] = useState(false)
   const [modalInputVisible, setModalInputVisible] = useState(false)
   const navigation = useNavigation();
@@ -33,9 +36,18 @@ export default function SaveSelectionPage() {
   const [saveToAddErrorMessage, setSaveToAddErrorMessage] = useState('')
 
   const getData = async () => {
-    setSaves(await getSaves())
-    setModalInputVisible(false)
-    setSaveToAddName('')
+    setIsLoading(true)
+    try {
+      setSaves(await getSaves())
+    }
+    catch (error) {
+      console.log(error)
+    }
+    finally {
+      setModalInputVisible(false)
+      setSaveToAddName('')
+      setIsLoading(false)
+    }
   }
 
   const addSave = () => {
@@ -47,6 +59,7 @@ export default function SaveSelectionPage() {
       setSaveToAddErrorMessage('Save name cannot be longer than 20 characters')
     }
     else {
+      setIsLoading(true)
       createNewSave(
         lastID,
         user?.email,
@@ -68,6 +81,7 @@ export default function SaveSelectionPage() {
   }
 
   const deleteSave = async (save_id) => {
+    setIsLoading(true)
     try {
       await removeSave(save_id);
     }
@@ -75,8 +89,8 @@ export default function SaveSelectionPage() {
       console.log(error)
     }
     finally {
-      getData();
       setModalVisible(false)
+      getData();
       setSaveToDeleteName('')
       setSaveToDeleteID('')
     }
@@ -122,16 +136,22 @@ export default function SaveSelectionPage() {
     <>
       <View style={style.container}>
         <Title name={'Characters'}></Title>
-        <CardScroll style={style.card}>
-          {saveFiles.map((item, index) => (
-            <SaveFileButton
-              label={item.save_name}
-              key={index}
-              onClick={() => moveTo('BuildSelectionScreen', item?.save_id)}
-              onDelete={() => onDeleteModal(item?.save_name, item?.save_id)}
-            />
-          ))}
-        </CardScroll>
+        {!isLoading ? (
+          <CardScroll style={style.card}>
+            {saveFiles.map((item, index) => (
+              <SaveFileButton
+                label={item.save_name}
+                key={index}
+                onClick={() => moveTo('BuildSelectionScreen', item?.save_id)}
+                onDelete={() => onDeleteModal(item?.save_name, item?.save_id)}
+              />
+            ))}
+          </CardScroll>
+        ) : (
+          <Card style={style.card_loading}>
+            <Loader />
+          </Card>
+        )}
         <NewSaveButton label="ADD A NEW SAVE" plusIcon onClick={onAddSaveModal} />
       </View>
       <ModalConfirm

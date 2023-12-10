@@ -7,11 +7,12 @@ import GoBackButton from '../../components/GoBackButton';
 import DefaultTextInput from '../../components/DefaultTextInput';
 import { editSaveName } from '../../../firebase';
 import { getSave } from '../../../firebase';
-import { useIsFocused } from '@react-navigation/native';
+import Loader from '../../components/Loader';
 
 export default function BuildSelectionPage({ route, navigation }) {
-  const isFocused = useIsFocused();
   const { saveFile } = route.params;
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const [save, setSave] = useState([]);
 
@@ -21,13 +22,13 @@ export default function BuildSelectionPage({ route, navigation }) {
 
   const getSaveData = async () => {
     setSave(await getSave(saveFile));
+    setIsLoading(false)
   };
 
   useEffect(() => {
-    if (isFocused) {
-      getSaveData();
-    }
-  }, [isFocused]);
+    setIsLoading(true)
+    getSaveData();
+  }, []);
 
   useEffect(() => {
     setSaveName(save?.save_name);
@@ -51,12 +52,20 @@ export default function BuildSelectionPage({ route, navigation }) {
     <View style={style.container}>
       <View style={style.title_container}>
         <GoBackButton goBackFunction={() => navigation.goBack()} />
-        <DefaultTextInput
-          style={style.text_input}
-          goBackButtonExist
-          value={saveName}
-          onChange={setSaveName}>
-        </DefaultTextInput>
+        {isLoading ? (
+          <Card style={style.card_loading}>
+            <Loader size={50} />
+          </Card>
+        ) : (
+          <DefaultTextInput
+            style={style.text_input}
+            goBackButtonExist
+            value={saveName}
+            onChange={setSaveName}
+            maxLength={16}
+            >
+          </DefaultTextInput>
+        )}
       </View>
       <Card style={style.card}>
         <CategoryButton
