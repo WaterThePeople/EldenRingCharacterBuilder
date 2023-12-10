@@ -36,6 +36,7 @@ export default function SaveSelectionPage() {
   const [saveToAddErrorMessage, setSaveToAddErrorMessage] = useState('')
 
   const getData = async () => {
+    setModalInputVisible(false)
     setIsLoading(true)
     try {
       setSaves(await getSaves())
@@ -44,7 +45,6 @@ export default function SaveSelectionPage() {
       console.log(error)
     }
     finally {
-      setModalInputVisible(false)
       setSaveToAddName('')
       setIsLoading(false)
     }
@@ -81,6 +81,7 @@ export default function SaveSelectionPage() {
   }
 
   const deleteSave = async (save_id) => {
+    setModalVisible(false)
     setIsLoading(true)
     try {
       await removeSave(save_id);
@@ -89,7 +90,6 @@ export default function SaveSelectionPage() {
       console.log(error)
     }
     finally {
-      setModalVisible(false)
       getData();
       setSaveToDeleteName('')
       setSaveToDeleteID('')
