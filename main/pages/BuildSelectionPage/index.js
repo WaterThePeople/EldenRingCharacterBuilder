@@ -63,7 +63,7 @@ export default function BuildSelectionPage({ route, navigation }) {
             value={saveName}
             onChange={setSaveName}
             maxLength={16}
-            >
+          >
           </DefaultTextInput>
         )}
       </View>
@@ -80,11 +80,17 @@ export default function BuildSelectionPage({ route, navigation }) {
           styles={style.item}
           onClick={() => moveToScreen(saveID, 'WeaponsScreen')}
         />
-        <CategoryButton icon={'armor'} category={'Armor'} styles={style.item} />
+        <CategoryButton
+          icon={'armor'}
+          category={'Armor'}
+          styles={style.item}
+          onClick={() => moveToScreen(saveID, 'ArmorsScreen')}
+        />
         <CategoryButton
           icon={'talismans'}
           category={'Talismans'}
           styles={style.item}
+          onClick={() => moveToScreen(saveID, 'TalismansScreen')}
         />
         <CategoryButton
           icon={'spells'}

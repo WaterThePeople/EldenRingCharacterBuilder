@@ -26,7 +26,6 @@ export default function WeaponDetail({route, navigation}) {
     navigation.pop(2);
   };
 
-
   return (
     <View style={style.container}>
       <View style={style.title_container}>
@@ -112,7 +111,7 @@ export default function WeaponDetail({route, navigation}) {
             <DefaultText style={style.text}>Guard</DefaultText>
             <View style={[style.right_stats]}>
               <View style={style.text_color_container}>
-                <DefaultText style={style.text}>Phy</DefaultText>
+                <DefaultText style={style.text}>Physical</DefaultText>
                 <DefaultText style={style.text}>
                   {weapon?.phy_reduction}
                 </DefaultText>

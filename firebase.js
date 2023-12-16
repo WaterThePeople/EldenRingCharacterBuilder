@@ -53,10 +53,16 @@ const removeSave = async save_id => {
     const saveRef = doc(firestore, 'user_saves', save_id.toString());
     const classesRef = doc(firestore, 'user_saves_classes', save_id.toString());
     const weaponsRef = doc(firestore, 'user_saves_weapons', save_id.toString());
+    const armorRef = doc(firestore, 'user_saves_armor', save_id.toString());
+    const talismansRef = doc(firestore, 'user_saves_talismans', save_id.toString());
+    const spellsRef = doc(firestore, 'user_saves_spells', save_id.toString());
 
     await deleteDoc(saveRef);
     await deleteDoc(classesRef);
     await deleteDoc(weaponsRef);
+    await deleteDoc(armorRef);
+    await deleteDoc(talismansRef);
+    await deleteDoc(spellsRef);
   } catch (error) {
     console.log(error);
   }
@@ -76,7 +82,9 @@ const createNewSave = (save_id, user_email, save_name) => {
   const savesRef = doc(firestore, 'user_saves', save_id.toString());
   const classesRef = doc(firestore, 'user_saves_classes', save_id.toString());
   const weaponsRef = doc(firestore, 'user_saves_weapons', save_id.toString());
-
+  const armorRef = doc(firestore, 'user_saves_armor', save_id.toString());
+  const talismansRef = doc(firestore, 'user_saves_talismans', save_id.toString());
+  const spellsRef = doc(firestore, 'user_saves_spells', save_id.toString());
 
   setDoc(savesRef, {
     save_id: save_id,
@@ -87,7 +95,20 @@ const createNewSave = (save_id, user_email, save_name) => {
   setDoc(classesRef, {
     save_id: save_id,
   });
+
   setDoc(weaponsRef, {
+    save_id: save_id,
+  });
+
+  setDoc(armorRef, {
+    save_id: save_id,
+  });
+
+  setDoc(talismansRef, {
+    save_id: save_id,
+  });
+
+  setDoc(spellsRef, {
     save_id: save_id,
   });
 };
@@ -95,7 +116,7 @@ const createNewSave = (save_id, user_email, save_name) => {
 const editSaveName = (save_id, user_email, save_name) => {
   const savesRef = doc(firestore, 'user_saves', save_id.toString());
 
-  updateDoc(savesRef, {
+  setDoc(savesRef, {
     save_id: save_id,
     save_name: save_name,
     user_email: user_email,
@@ -153,6 +174,58 @@ const deleteWeapon = (save_id, hand) => {
   });
 };
 
+const selectArmor = (save_id, armor, array) => {
+  const savesRef = doc(firestore, 'user_saves_armor', save_id.toString());
+
+  updateDoc(savesRef, {
+    [armor]: array,
+  });
+};
+
+const deleteArmor = (save_id, armor) => {
+  const savesRef = doc(firestore, 'user_saves_armor', save_id.toString());
+
+  updateDoc(savesRef, {
+    [armor]: '',
+  });
+};
+
+const getCurrentArmor = async (save_id) => {
+  try {
+    const snapshot = doc(firestore, 'user_saves_armor', save_id.toString());
+    const data = await getDoc(snapshot);
+    return data.data();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const selectTalisman = (save_id, slot, array) => {
+  const savesRef = doc(firestore, 'user_saves_talismans', save_id.toString());
+
+  updateDoc(savesRef, {
+    [slot]: array,
+  });
+};
+
+const deleteTalisman = (save_id, slot) => {
+  const savesRef = doc(firestore, 'user_saves_talismans', save_id.toString());
+
+  updateDoc(savesRef, {
+    [slot]: '',
+  });
+};
+
+const getCurrentTalismans = async (save_id) => {
+  try {
+    const snapshot = doc(firestore, 'user_saves_talismans', save_id.toString());
+    const data = await getDoc(snapshot);
+    return data.data();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export {
   auth,
   db,
@@ -167,4 +240,10 @@ export {
   getCurrentClass,
   getCurrentWeapons,
   deleteWeapon,
+  selectArmor,
+  deleteArmor,
+  getCurrentArmor,
+  selectTalisman,
+  deleteTalisman,
+  getCurrentTalismans,
 };

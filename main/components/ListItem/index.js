@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Image, Pressable } from 'react-native';
-import style from './Weapon.sass';
+import style from './ListItem.sass';
 import DefaultText from '../DefaultText';
 import icons from '../../constantData/icons';
 
-export default function Weapon({ weapon_name, image_url, onClick, isCurrentWeapon }) {
+export default function ListItem({ name, image_url, onClick, isCurrent, isTaken }) {
 
     iconSelect = (name) => {
         if (name === null) {
@@ -14,7 +14,7 @@ export default function Weapon({ weapon_name, image_url, onClick, isCurrentWeapo
     }
 
     return (
-        <Pressable style={[style.container, isCurrentWeapon && style.current]} onPress={() => onClick()}>
+        <Pressable style={[style.container, isCurrent && style.current, isTaken && style.taken]} onPress={() => onClick()}>
             <View style={style.item_container}>
                 <Image
                     style={style.icon}
@@ -28,7 +28,7 @@ export default function Weapon({ weapon_name, image_url, onClick, isCurrentWeapo
                 />
             </View>
             <DefaultText>
-                {weapon_name}
+                {name}
             </DefaultText>
         </Pressable>
     );

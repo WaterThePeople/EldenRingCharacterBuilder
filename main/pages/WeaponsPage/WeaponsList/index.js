@@ -4,7 +4,7 @@ import style from './WeaponsList.sass';
 import GoBackButton from '../../../components/GoBackButton';
 import CategoryTitle from '../../../components/CategoryTitle';
 import CardScroll from '../../../components/CardScroll';
-import Weapon from '../../../components/Weapon';
+import ListItem from '../../../components/ListItem';
 import DefaultButton from '../../../components/DefaultButton';
 import { deleteWeapon } from '../../../../firebase';
 
@@ -34,10 +34,10 @@ export default function WeaponsList({ route, navigation }) {
             </View>
             <CardScroll style={style.card}>
                 {weapons?.map((item, index) => (
-                    <Weapon
+                    <ListItem
                         key={index}
-                        isCurrentWeapon={item?.weapon_name === current_weapon?.weapon_name}
-                        weapon_name={item?.weapon_name}
+                        isCurrent={item?.weapon_name === current_weapon?.weapon_name}
+                        name={item?.weapon_name}
                         image_url={item?.image_url}
                         onClick={() => moveToWeaponDetail(item)}
                     />

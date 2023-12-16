@@ -10,7 +10,6 @@ export default function CategoryButtonItem({
   icon,
   onClick,
   image_url,
-  onRemove,
 }) {
   iconSelect = name => {
     if (name === null) {

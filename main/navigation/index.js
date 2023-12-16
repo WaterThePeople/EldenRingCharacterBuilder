@@ -10,6 +10,12 @@ import ClassPage from '../pages/ClassPage';
 import WeaponsPage from '../pages/WeaponsPage';
 import WeaponsList from '../pages/WeaponsPage/WeaponsList';
 import WeaponDetail from '../pages/WeaponsPage/WeaponsList/WeaponDetail';
+import ArmorsPage from '../pages/ArmorsPage';
+import ArmorList from '../pages/ArmorsPage/ArmorList';
+import ArmorDetail from '../pages/ArmorsPage/ArmorDetail';
+import TalismansPage from '../pages/TalismansPage';
+import TalismansList from '../pages/TalismansPage/TalismansList';
+import TalismanDetail from '../pages/TalismansPage/TalismanDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,7 +47,7 @@ function Navigation() {
         <Stack.Screen
           name="HomeScreen"
           component={HomePage}
-          options={{gestureEnabled: false}}
+          options={{ gestureEnabled: false }}
         />
         <Stack.Screen
           name="BuildSelectionScreen"
@@ -62,6 +68,30 @@ function Navigation() {
         <Stack.Screen
           name="WeaponDetail"
           component={WeaponDetail}
+        />
+        <Stack.Screen
+          name="ArmorsScreen"
+          component={ArmorsPage}
+        />
+        <Stack.Screen
+          name="ArmorListScreen"
+          component={ArmorList}
+        />
+        <Stack.Screen
+          name="ArmorDetailScreen"
+          component={ArmorDetail}
+        />
+        <Stack.Screen
+          name="TalismansScreen"
+          component={TalismansPage}
+        />
+        <Stack.Screen
+          name="TalismansListScreen"
+          component={TalismansList}
+        />
+        <Stack.Screen
+          name="TalismanDetailScreen"
+          component={TalismanDetail}
         />
       </Stack.Navigator>
     </NavigationContainer>
