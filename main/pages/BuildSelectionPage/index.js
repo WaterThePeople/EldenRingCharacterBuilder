@@ -96,6 +96,7 @@ export default function BuildSelectionPage({ route, navigation }) {
           icon={'spells'}
           category={'Spells'}
           styles={style.item}
+          onClick={() => moveToScreen(saveID, 'SpellsScreen')}
         />
         <CategoryButton icon={'stats'} category={'Stats'} styles={style.item} />
       </Card>

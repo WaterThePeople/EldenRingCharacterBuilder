@@ -16,6 +16,9 @@ import ArmorDetail from '../pages/ArmorsPage/ArmorDetail';
 import TalismansPage from '../pages/TalismansPage';
 import TalismansList from '../pages/TalismansPage/TalismansList';
 import TalismanDetail from '../pages/TalismansPage/TalismanDetail';
+import SpellsPage from '../pages/SpellsPage';
+import SpellsList from '../pages/SpellsPage/SpellsList';
+import SpellDetail from '../pages/SpellsPage/SpellDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -92,6 +95,18 @@ function Navigation() {
         <Stack.Screen
           name="TalismanDetailScreen"
           component={TalismanDetail}
+        />
+        <Stack.Screen
+          name="SpellsScreen"
+          component={SpellsPage}
+        />
+        <Stack.Screen
+          name="SpellsListScreen"
+          component={SpellsList}
+        />
+        <Stack.Screen
+          name="SpellDetailScreen"
+          component={SpellDetail}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -9,10 +9,10 @@ import DefaultButton from '../../../components/DefaultButton';
 import { selectTalisman } from '../../../../firebase';
 
 export default function TalismanDetail({ route, navigation }) {
-    const { talisman, slot, save_id } = route.params;
+    const { talisman, slot, save_id, current_talisman } = route.params;
 
     const confirmTalisman = () => {
-        selectTalisman(save_id, slot, talisman);
+        selectTalisman(save_id, slot, talisman, current_talisman);
         navigation.pop(2);
     };
 
@@ -39,7 +39,7 @@ export default function TalismanDetail({ route, navigation }) {
                 </View>
 
                 <View style={[style.effect_info, { flex: 1 }]}>
-                    <View style={style.left}>
+                    <View style={style.info}>
                         <DefaultText
                             numberOfLines={0}
                             style={style.text}
@@ -60,7 +60,7 @@ export default function TalismanDetail({ route, navigation }) {
                 </View>
 
                 <View style={[style.type_info, { flex: 1 }]}>
-                    <View style={style.left}>
+                    <View style={style.info}>
                         <View style={style.left_stats}>
                             <View style={style.text_color_container}>
                                 <DefaultText

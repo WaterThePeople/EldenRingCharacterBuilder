@@ -1,47 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
-import style from './TalismansList.sass';
+import style from './SpellsList.sass';
 import GoBackButton from '../../../components/GoBackButton';
 import CategoryTitle from '../../../components/CategoryTitle';
 import CardScroll from '../../../components/CardScroll';
 import ListItem from '../../../components/ListItem';
 import DefaultButton from '../../../components/DefaultButton';
-import { deleteTalisman } from '../../../../firebase';
+import { deleteSpell } from '../../../../firebase';
 import ModalConfirm from '../../../components/ModalConfirm';
 
-export default function TalismansList({ route, navigation }) {
+export default function SpellsList({ route, navigation }) {
 
-    const { category_name, category_image, save_id, slot, current_talisman, talismans, current_talismans } = route.params;
+    const { category_name, category_image, save_id, slot, current_spell, spells, current_spells } = route.params;
 
     const [isModalVisible, setIsModalVisible] = useState(false)
-    const takenTalismans = Object.values(current_talismans);
+    const takenSpells = Object.values(current_spells);
 
-    const removeTalisman = () => {
-        deleteTalisman(save_id, slot, current_talisman);
+    const removeSpell = () => {
+        deleteSpell(save_id, slot, current_spell);
         navigation.pop(1);
     };
 
-    const moveToTalismanDetail = (talisman) => {
-        if (checkIfTaken(talisman) === 'taken') {
+    const moveToSpellDetail = (spell) => {
+        if (checkIfTaken(spell) === 'taken') {
             setIsModalVisible(true)
         } else {
-            navigation.navigate('TalismanDetailScreen',
+            navigation.navigate('SpellDetailScreen',
                 {
                     slot: slot,
-                    talisman: talisman,
+                    spell: spell,
                     save_id: save_id,
-                    current_talisman: current_talisman,
                 })
         }
     };
 
-    const checkIfTaken = (talisman) => {
+    const checkIfTaken = (spell) => {
 
-        for (let i = 0; i < takenTalismans?.length; i++) {
-            if (talisman?.talisman_name === current_talisman?.talisman_name) {
+        for (let i = 0; i < takenSpells?.length; i++) {
+            if (spell?.spell_name === current_spell?.spell_name) {
                 return 'current'
             }
-            if (takenTalismans[i]?.talisman_name === talisman?.talisman_name) {
+            if (takenSpells[i]?.spell_name === spell?.spell_name) {
                 return 'taken'
             }
         }
@@ -55,27 +54,27 @@ export default function TalismansList({ route, navigation }) {
                     <CategoryTitle icon={category_image} name={category_name} goBackButtonExist></CategoryTitle>
                 </View>
                 <CardScroll style={style.card}>
-                    {talismans?.map((item, index) => (
+                    {spells?.map((item, index) => (
                         <ListItem
                             key={index}
                             isCurrent={checkIfTaken(item) === 'current'}
                             isTaken={checkIfTaken(item) === 'taken'}
-                            name={item?.talisman_name}
+                            name={item?.spell_name}
                             image_url={item?.image_url}
-                            onClick={() => moveToTalismanDetail(item)}
+                            onClick={() => moveToSpellDetail(item)}
                         />
                     ))}
                 </CardScroll>
                 <DefaultButton
                     styles={style.confirm_button}
                     label={'Clear slot'}
-                    onClick={() => removeTalisman()}
+                    onClick={() => removeSpell()}
                 />
             </View>
             <ModalConfirm
                 visible={isModalVisible}
                 setVisible={setIsModalVisible}
-                text={"You can't pick a talisman, that you have already slotted!"}
+                text={"You can't pick a spell, that you have already slotted!"}
                 onConfirm={() => setIsModalVisible(false)}
                 confirmLabel={'OK'}
                 confirmColor={'green'}

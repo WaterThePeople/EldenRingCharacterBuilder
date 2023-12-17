@@ -200,16 +200,43 @@ const getCurrentArmor = async (save_id) => {
   }
 };
 
-const selectTalisman = (save_id, slot, array) => {
+const selectTalisman = (save_id, slot, array, current_talisman) => {
   const savesRef = doc(firestore, 'user_saves_talismans', save_id.toString());
+
+  if (array?.talisman_name === 'Moon Of Nokstella') {
+    const spellsRef = doc(firestore, 'user_saves_spells', save_id.toString());
+
+    updateDoc(spellsRef, {
+      hasMoonOfNokstella: true,
+    });
+  }
+  else if (current_talisman?.talisman_name === 'Moon Of Nokstella') {
+    const spellsRef = doc(firestore, 'user_saves_spells', save_id.toString());
+
+    updateDoc(spellsRef, {
+      hasMoonOfNokstella: false,
+      slot11: '',
+      slot12: '',
+    });
+  }
 
   updateDoc(savesRef, {
     [slot]: array,
   });
 };
 
-const deleteTalisman = (save_id, slot) => {
+const deleteTalisman = (save_id, slot, array) => {
   const savesRef = doc(firestore, 'user_saves_talismans', save_id.toString());
+
+  if (array?.talisman_name === 'Moon Of Nokstella') {
+    const spellsRef = doc(firestore, 'user_saves_spells', save_id.toString());
+
+    updateDoc(spellsRef, {
+      hasMoonOfNokstella: false,
+      slot11: '',
+      slot12: '',
+    });
+  }
 
   updateDoc(savesRef, {
     [slot]: '',
@@ -219,6 +246,32 @@ const deleteTalisman = (save_id, slot) => {
 const getCurrentTalismans = async (save_id) => {
   try {
     const snapshot = doc(firestore, 'user_saves_talismans', save_id.toString());
+    const data = await getDoc(snapshot);
+    return data.data();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const selectSpell = (save_id, slot, array) => {
+  const savesRef = doc(firestore, 'user_saves_spells', save_id.toString());
+
+  updateDoc(savesRef, {
+    [slot]: array,
+  });
+};
+
+const deleteSpell = (save_id, slot) => {
+  const savesRef = doc(firestore, 'user_saves_spells', save_id.toString());
+
+  updateDoc(savesRef, {
+    [slot]: '',
+  });
+};
+
+const getCurrentSpells = async (save_id) => {
+  try {
+    const snapshot = doc(firestore, 'user_saves_spells', save_id.toString());
     const data = await getDoc(snapshot);
     return data.data();
   } catch (error) {
@@ -246,4 +299,7 @@ export {
   selectTalisman,
   deleteTalisman,
   getCurrentTalismans,
+  selectSpell,
+  deleteSpell,
+  getCurrentSpells,
 };
