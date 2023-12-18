@@ -50,8 +50,8 @@ export default function LoginPage({ route, navigation }) {
 
     useEffect(() => {
         if (isFocused) {
-            setEmail('test@gmail.com')
-            setPassword('pass123')
+            setEmail('')
+            setPassword('')
         }
     }, [isFocused]);
 
