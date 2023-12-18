@@ -19,6 +19,7 @@ import TalismanDetail from '../pages/TalismansPage/TalismanDetail';
 import SpellsPage from '../pages/SpellsPage';
 import SpellsList from '../pages/SpellsPage/SpellsList';
 import SpellDetail from '../pages/SpellsPage/SpellDetail';
+import SummaryPage from '../pages/SummaryPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -107,6 +108,10 @@ function Navigation() {
         <Stack.Screen
           name="SpellDetailScreen"
           component={SpellDetail}
+        />
+        <Stack.Screen
+          name="SummaryScreen"
+          component={SummaryPage}
         />
       </Stack.Navigator>
     </NavigationContainer>

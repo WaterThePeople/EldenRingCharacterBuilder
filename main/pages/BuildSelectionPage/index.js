@@ -42,9 +42,10 @@ export default function BuildSelectionPage({ route, navigation }) {
     }
   }, [saveName]);
 
-  const moveToScreen = (save_id, screen) => {
+  const moveToScreen = (save_id, screen, save_name) => {
     navigation.navigate(screen, {
       save_id: save_id,
+      save_name: save_name,
     });
   };
 
@@ -98,7 +99,12 @@ export default function BuildSelectionPage({ route, navigation }) {
           styles={style.item}
           onClick={() => moveToScreen(saveID, 'SpellsScreen')}
         />
-        <CategoryButton icon={'stats'} category={'Stats'} styles={style.item} />
+        <CategoryButton 
+          icon={'stats'} 
+          category={'Summary'} 
+          styles={style.item} 
+          onClick={() => moveToScreen(saveID, 'SummaryScreen', saveName)}
+        />
       </Card>
     </View>
   );
