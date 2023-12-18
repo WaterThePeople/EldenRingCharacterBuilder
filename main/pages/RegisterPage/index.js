@@ -9,9 +9,11 @@ import { auth } from '../../../firebase';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import ModalConfirm from '../../components/ModalConfirm';
 import LoaderFullScreen from '../../components/LoaderFullScreen';
+import { useNetInfo } from '@react-native-community/netinfo';
 
 export default function RegisterPage({ route, navigation }) {
 
+    const netInfo = useNetInfo();
     const [modalVisible, setModalVisible] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
@@ -81,9 +83,15 @@ export default function RegisterPage({ route, navigation }) {
                     <DefaultText numberOfLines={2} autoFont>Create your account!</DefaultText>
                 </View>
                 <View style={style.container}>
-                    {wrongRegister && (
+                    {wrongRegister && netInfo?.isConnected && (
                         <View style={style.error_container}>
                             <DefaultText style={style.error_text} autoFont>{errorMessage}</DefaultText>
+                        </View>
+                    )}
+                    {!netInfo?.isConnected && (
+                        <View style={style.error_container}>
+                            <DefaultText style={style.error_text} autoFont>You aren't conncted to the internet!</DefaultText>
+                            <DefaultText style={style.error_text} autoFont>Check your wifi connection to use the app!</DefaultText>
                         </View>
                     )}
                     <View style={style.input_container}>

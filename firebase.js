@@ -130,11 +130,12 @@ const getData = (index, setState) => {
   });
 };
 
-const selectClass = (save_id, array) => {
+const selectClass = (save_id, array, stats) => {
   const savesRef = doc(firestore, 'user_saves_classes', save_id.toString());
 
   updateDoc(savesRef, {
     class: array,
+    stats: stats,
   });
 };
 
@@ -142,7 +143,7 @@ const getCurrentClass = async save_id => {
   try {
     const snapshot = doc(firestore, 'user_saves_classes', save_id.toString());
     const data = await getDoc(snapshot);
-    return data.data().class;
+    return data.data();
   } catch (error) {
     console.log(error);
   }

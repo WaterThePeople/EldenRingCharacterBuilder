@@ -9,11 +9,12 @@ import { auth } from '../../../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { useIsFocused } from '@react-navigation/native';
 import LoaderFullScreen from '../../components/LoaderFullScreen';
+import { useNetInfo } from '@react-native-community/netinfo';
 
 export default function LoginPage({ route, navigation }) {
 
+    const netInfo = useNetInfo();
     const isFocused = useIsFocused();
-
     const [isLoading, setIsLoading] = useState(false)
 
     const [email, setEmail] = useState('')
@@ -50,8 +51,8 @@ export default function LoginPage({ route, navigation }) {
 
     useEffect(() => {
         if (isFocused) {
-            setEmail('')
-            setPassword('')
+            setEmail('test@gmail.com')
+            setPassword('pass123')
         }
     }, [isFocused]);
 
@@ -72,6 +73,13 @@ export default function LoginPage({ route, navigation }) {
                     {wrongLogin && (
                         <View style={style.error_container}>
                             <DefaultText style={style.error_text} autoFont>Wrong email or password!</DefaultText>
+                        </View>
+                    )}
+
+                    {!netInfo?.isConnected && (
+                        <View style={style.error_container}>
+                            <DefaultText style={style.error_text} autoFont>You aren't conncted to the internet!</DefaultText>
+                            <DefaultText style={style.error_text} autoFont>Check your wifi connection to use the app!</DefaultText>
                         </View>
                     )}
 
@@ -108,7 +116,7 @@ export default function LoginPage({ route, navigation }) {
                 </View>
             </Card>
             {isLoading && (
-                <LoaderFullScreen visible={isLoading}/>
+                <LoaderFullScreen visible={isLoading} />
             )}
         </>
     );

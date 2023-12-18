@@ -71,7 +71,7 @@ export default function BuildSelectionPage({ route, navigation }) {
       <Card style={style.card}>
         <CategoryButton
           icon={'class'}
-          category={'Class'}
+          category={'Stats'}
           styles={style.item}
           onClick={() => moveToScreen(saveID, 'ClassScreen')}
         />
@@ -99,10 +99,10 @@ export default function BuildSelectionPage({ route, navigation }) {
           styles={style.item}
           onClick={() => moveToScreen(saveID, 'SpellsScreen')}
         />
-        <CategoryButton 
-          icon={'stats'} 
-          category={'Summary'} 
-          styles={style.item} 
+        <CategoryButton
+          icon={'stats'}
+          category={'Summary'}
+          styles={style.item}
           onClick={() => moveToScreen(saveID, 'SummaryScreen', saveName)}
         />
       </Card>
