@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View} from 'react-native';
 import style from './BuildSelectionPage.sass';
 import Card from '../../components/Card';
 import CategoryButton from '../../components/CategoryButton';
 import GoBackButton from '../../components/GoBackButton';
 import DefaultTextInput from '../../components/DefaultTextInput';
-import { editSaveName } from '../../../firebase';
-import { getSave } from '../../../firebase';
+import {editSaveName} from '../../../firebase';
+import {getSave} from '../../../firebase';
 import Loader from '../../components/Loader';
 
-export default function BuildSelectionPage({ route, navigation }) {
-  const { saveFile } = route.params;
+export default function BuildSelectionPage({route, navigation}) {
+  const {saveFile} = route.params;
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const [save, setSave] = useState([]);
 
@@ -22,11 +22,11 @@ export default function BuildSelectionPage({ route, navigation }) {
 
   const getSaveData = async () => {
     setSave(await getSave(saveFile));
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     getSaveData();
   }, []);
 
@@ -63,49 +63,53 @@ export default function BuildSelectionPage({ route, navigation }) {
             goBackButtonExist
             value={saveName}
             onChange={setSaveName}
-            maxLength={16}
-          >
-          </DefaultTextInput>
+            maxLength={16}></DefaultTextInput>
         )}
       </View>
-      <Card style={style.card}>
-        <CategoryButton
-          icon={'class'}
-          category={'Stats'}
-          styles={style.item}
-          onClick={() => moveToScreen(saveID, 'ClassScreen')}
-        />
-        <CategoryButton
-          icon={'weapons'}
-          category={'Weapons'}
-          styles={style.item}
-          onClick={() => moveToScreen(saveID, 'WeaponsScreen')}
-        />
-        <CategoryButton
-          icon={'armor'}
-          category={'Armor'}
-          styles={style.item}
-          onClick={() => moveToScreen(saveID, 'ArmorsScreen')}
-        />
-        <CategoryButton
-          icon={'talismans'}
-          category={'Talismans'}
-          styles={style.item}
-          onClick={() => moveToScreen(saveID, 'TalismansScreen')}
-        />
-        <CategoryButton
-          icon={'spells'}
-          category={'Spells'}
-          styles={style.item}
-          onClick={() => moveToScreen(saveID, 'SpellsScreen')}
-        />
-        <CategoryButton
-          icon={'stats'}
-          category={'Summary'}
-          styles={style.item}
-          onClick={() => moveToScreen(saveID, 'SummaryScreen', saveName)}
-        />
-      </Card>
+      {!isLoading ? (
+        <Card style={style.card}>
+          <CategoryButton
+            icon={'class'}
+            category={'Stats'}
+            styles={style.item}
+            onClick={() => moveToScreen(saveID, 'ClassScreen')}
+          />
+          <CategoryButton
+            icon={'weapons'}
+            category={'Weapons'}
+            styles={style.item}
+            onClick={() => moveToScreen(saveID, 'WeaponsScreen')}
+          />
+          <CategoryButton
+            icon={'armor'}
+            category={'Armor'}
+            styles={style.item}
+            onClick={() => moveToScreen(saveID, 'ArmorsScreen')}
+          />
+          <CategoryButton
+            icon={'talismans'}
+            category={'Talismans'}
+            styles={style.item}
+            onClick={() => moveToScreen(saveID, 'TalismansScreen')}
+          />
+          <CategoryButton
+            icon={'spells'}
+            category={'Spells'}
+            styles={style.item}
+            onClick={() => moveToScreen(saveID, 'SpellsScreen')}
+          />
+          <CategoryButton
+            icon={'stats'}
+            category={'Summary'}
+            styles={style.item}
+            onClick={() => moveToScreen(saveID, 'SummaryScreen', saveName)}
+          />
+        </Card>
+      ) : (
+        <Card style={style.card_loading_container}>
+          <Loader />
+        </Card>
+      )}
     </View>
   );
 }

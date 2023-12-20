@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View} from 'react-native';
 import style from './ClassPage.sass';
 import SelectDropdown from 'react-native-select-dropdown';
 import DropdownIcon from '../../components/DropdownIcon';
@@ -8,36 +8,49 @@ import DefaultText from '../../components/DefaultText';
 import DefaultButton from '../../components/DefaultButton';
 import CardScroll from '../../components/CardScroll';
 import GoBackButton from '../../components/GoBackButton';
-import { Dimensions } from 'react-native';
-import { getData, selectClass, getCurrentClass } from '../../../firebase';
+import {Dimensions} from 'react-native';
+import {getData, selectClass, getCurrentClass} from '../../../firebase';
 import Loader from '../../components/Loader';
 import Card from '../../components/Card';
+import Stat from '../../components/Stat';
+import colors from '../../constantData/colors';
+import {
+  calculate_hp,
+  calculate_fp,
+  calculate_stamina,
+  calculate_equip_load,
+  calculate_discovery,
+} from '../../constantData/statsEquations';
 
-export default function ClassPage({ route, navigation }) {
+export default function ClassPage({route, navigation}) {
+  const {save_id} = route.params;
 
-  const { save_id } = route.params;
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [isLoading, setIsLoading] = useState(false)
-
-  const [classesData, setClassesData] = useState([])
-  const [classesList, setClassesList] = useState([])
+  const [classesData, setClassesData] = useState([]);
+  const [classesList, setClassesList] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [currentClass, setCurrentClass] = useState('');
-  const [currentStats, setCurrentStats] = useState('')
+  const [currentStats, setCurrentStats] = useState('');
 
-  const [level, setLevel] = useState('')
-  const [vigor, setVigor] = useState('')
-  const [mind, setMind] = useState('')
-  const [endurance, setEndurance] = useState('')
-  const [strength, setStrength] = useState('')
-  const [dexterity, setDexterity] = useState('')
-  const [faith, setFaith] = useState('')
-  const [intelligence, setIntelligence] = useState('')
-  const [arcane, setArcane] = useState('')
+  const [level, setLevel] = useState('');
+  const [vigor, setVigor] = useState('');
+  const [mind, setMind] = useState('');
+  const [endurance, setEndurance] = useState('');
+  const [strength, setStrength] = useState('');
+  const [dexterity, setDexterity] = useState('');
+  const [faith, setFaith] = useState('');
+  const [intelligence, setIntelligence] = useState('');
+  const [arcane, setArcane] = useState('');
+
+  const [HP, setHP] = useState('');
+  const [FP, setFP] = useState('');
+  const [stamina, setStamina] = useState('');
+  const [equipLoad, setEquipLoad] = useState('');
+  const [discovery, setDiscovery] = useState('');
 
   const selectClassButton = () => {
-    const temp =
-    {
+    const temp = {
       level: level,
       vigor: vigor,
       mind: mind,
@@ -47,30 +60,31 @@ export default function ClassPage({ route, navigation }) {
       faith: faith,
       intelligence: intelligence,
       arcane: arcane,
-    }
+    };
     selectClass(save_id, currentClass, temp);
     navigation.goBack();
   };
 
   const getCurrentClassData = async () => {
-    let temp = await getCurrentClass(save_id)
+    let temp = await getCurrentClass(save_id);
     setCurrentClass(temp?.class);
     setCurrentStats(temp?.stats);
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    setIsLoading(true)
-    getData('classes', setClassesData)
-    getCurrentClassData()
+    setIsLoading(true);
+    getData('classes', setClassesData);
+    getCurrentClassData();
   }, []);
 
   useEffect(() => {
-    setClassesList(classesData?.data?.map(a => a.class_name))
+    setClassesList(classesData?.data?.map(a => a.class_name));
   }, [classesData]);
 
   const calculateLevel = () => {
-    let temp = parseInt(currentClass?.class_level) +
+    let temp =
+      parseInt(currentClass?.class_level) +
       (parseInt(vigor) - parseInt(currentClass?.class_vigor)) +
       (parseInt(mind) - parseInt(currentClass?.class_mind)) +
       (parseInt(endurance) - parseInt(currentClass?.class_endurance)) +
@@ -78,38 +92,37 @@ export default function ClassPage({ route, navigation }) {
       (parseInt(dexterity) - parseInt(currentClass?.class_dexterity)) +
       (parseInt(faith) - parseInt(currentClass?.class_faith)) +
       (parseInt(intelligence) - parseInt(currentClass?.class_intelligence)) +
-      (parseInt(arcane) - parseInt(currentClass?.class_arcane))
+      (parseInt(arcane) - parseInt(currentClass?.class_arcane));
 
-    setLevel(temp)
-  }
+    setLevel(temp);
+  };
 
   const onPlus = (stat, setStat, class_stat) => {
-    let temp = parseInt(stat) + 1
+    let temp = parseInt(stat) + 1;
     if (temp < 100 && temp >= parseInt(class_stat)) {
-      setStat(temp)
+      setStat(temp);
     }
-  }
+  };
 
   const onMinus = (stat, setStat, class_stat) => {
-    let temp = parseInt(stat) - 1
+    let temp = parseInt(stat) - 1;
     if (temp < 100 && temp >= parseInt(class_stat)) {
-      setStat(temp)
+      setStat(temp);
     }
-  }
+  };
 
-  const changeCurrentClass = (item) => {
-    setLevel(item?.class_level)
-    setVigor(item?.class_vigor)
-    setMind(item?.class_mind)
-    setEndurance(item?.class_endurance)
-    setStrength(item?.class_strength)
-    setDexterity(item?.class_dexterity)
-    setFaith(item?.class_faith)
-    setIntelligence(item?.class_intelligence)
-    setArcane(item?.class_arcane)
+  const changeCurrentClass = item => {
+    setLevel(item?.class_level);
+    setVigor(item?.class_vigor);
+    setMind(item?.class_mind);
+    setEndurance(item?.class_endurance);
+    setStrength(item?.class_strength);
+    setDexterity(item?.class_dexterity);
+    setFaith(item?.class_faith);
+    setIntelligence(item?.class_intelligence);
+    setArcane(item?.class_arcane);
 
-    const temp =
-    {
+    const temp = {
       level: item?.class_level,
       vigor: item?.class_vigor,
       mind: item?.class_mind,
@@ -119,28 +132,56 @@ export default function ClassPage({ route, navigation }) {
       faith: item?.class_faith,
       intelligence: item?.class_intelligence,
       arcane: item?.class_arcane,
-    }
+    };
 
     setCurrentClass(item);
-    setCurrentStats(temp)
-  }
+    setCurrentStats(temp);
+  };
 
   useEffect(() => {
-    calculateLevel()
-  }, [vigor, mind, endurance, strength, dexterity, faith, intelligence, arcane]);
+    calculateLevel();
+  }, [
+    vigor,
+    mind,
+    endurance,
+    strength,
+    dexterity,
+    faith,
+    intelligence,
+    arcane,
+  ]);
 
   useEffect(() => {
-    setLevel(currentStats?.level)
-    setVigor(currentStats?.vigor)
-    setMind(currentStats?.mind)
-    setEndurance(currentStats?.endurance)
-    setStrength(currentStats?.strength)
-    setDexterity(currentStats?.dexterity)
-    setFaith(currentStats?.faith)
-    setIntelligence(currentStats?.intelligence)
-    setArcane(currentStats?.arcane)
+    setLevel(currentStats?.level);
+    setVigor(currentStats?.vigor);
+    setMind(currentStats?.mind);
+    setEndurance(currentStats?.endurance);
+    setStrength(currentStats?.strength);
+    setDexterity(currentStats?.dexterity);
+    setFaith(currentStats?.faith);
+    setIntelligence(currentStats?.intelligence);
+    setArcane(currentStats?.arcane);
   }, [currentStats]);
 
+  useEffect(() => {
+    setHP(calculate_hp(parseInt(vigor)));
+  }, [vigor]);
+
+  useEffect(() => {
+    setFP(calculate_fp(parseInt(mind)));
+  }, [mind]);
+
+  useEffect(() => {
+    setStamina(calculate_stamina(parseInt(endurance)));
+  }, [endurance]);
+
+  useEffect(() => {
+    setEquipLoad(calculate_equip_load(parseInt(endurance)));
+  }, [endurance]);
+
+  useEffect(() => {
+    setDiscovery(calculate_discovery(parseInt(arcane)));
+  }, [arcane]);
 
   return (
     <View style={style.container}>
@@ -156,10 +197,15 @@ export default function ClassPage({ route, navigation }) {
             onSelect={(selectedItem, index) => {
               changeCurrentClass(classesData?.data?.[index]);
             }}
-            buttonStyle={[style.dropdown_button, { width: Dimensions.get('window').width - 90 }]}
+            buttonStyle={[
+              style.dropdown_button,
+              {width: Dimensions.get('window').width - 90},
+            ]}
             buttonTextStyle={style.dropdown_button_text}
             dropdownStyle={style.dropdown}
-            defaultButtonText={currentClass?.class_name ? currentClass?.class_name : ""}
+            defaultButtonText={
+              currentClass?.class_name ? currentClass?.class_name : ''
+            }
             rowStyle={style.dropdown_row}
             rowTextStyle={style.dropdown_row_text}
             statusBarTranslucent={true}
@@ -200,29 +246,53 @@ export default function ClassPage({ route, navigation }) {
             stat={'Endurance'}
             value={currentClass ? currentClass?.class_endurance : '0'}
             totalValue={currentStats ? endurance : '0'}
-            onPlus={() => onPlus(endurance, setEndurance, currentClass?.class_endurance)}
-            onMinus={() => onMinus(endurance, setEndurance, currentClass?.class_endurance)}
+            onPlus={() =>
+              onPlus(endurance, setEndurance, currentClass?.class_endurance)
+            }
+            onMinus={() =>
+              onMinus(endurance, setEndurance, currentClass?.class_endurance)
+            }
           />
           <ClassStatInfo
             stat={'Strength'}
             value={currentClass ? currentClass?.class_strength : '0'}
             totalValue={currentStats ? strength : '0'}
-            onPlus={() => onPlus(strength, setStrength, currentClass?.class_strength)}
-            onMinus={() => onMinus(strength, setStrength, currentClass?.class_strength)}
+            onPlus={() =>
+              onPlus(strength, setStrength, currentClass?.class_strength)
+            }
+            onMinus={() =>
+              onMinus(strength, setStrength, currentClass?.class_strength)
+            }
           />
           <ClassStatInfo
             stat={'Dexterity'}
             value={currentClass ? currentClass?.class_dexterity : '0'}
             totalValue={currentStats ? dexterity : '0'}
-            onPlus={() => onPlus(dexterity, setDexterity, currentClass?.class_dexterity)}
-            onMinus={() => onMinus(dexterity, setDexterity, currentClass?.class_dexterity)}
+            onPlus={() =>
+              onPlus(dexterity, setDexterity, currentClass?.class_dexterity)
+            }
+            onMinus={() =>
+              onMinus(dexterity, setDexterity, currentClass?.class_dexterity)
+            }
           />
           <ClassStatInfo
             stat={'Intelligence'}
             value={currentClass ? currentClass?.class_intelligence : '0'}
             totalValue={currentStats ? intelligence : '0'}
-            onPlus={() => onPlus(intelligence, setIntelligence, currentClass?.class_intelligence)}
-            onMinus={() => onMinus(intelligence, setIntelligence, currentClass?.class_intelligence)}
+            onPlus={() =>
+              onPlus(
+                intelligence,
+                setIntelligence,
+                currentClass?.class_intelligence,
+              )
+            }
+            onMinus={() =>
+              onMinus(
+                intelligence,
+                setIntelligence,
+                currentClass?.class_intelligence,
+              )
+            }
           />
           <ClassStatInfo
             stat={'Faith'}
@@ -236,8 +306,63 @@ export default function ClassPage({ route, navigation }) {
             value={currentClass ? currentClass?.class_arcane : '0'}
             totalValue={currentStats ? arcane : '0'}
             onPlus={() => onPlus(arcane, setArcane, currentClass?.class_arcane)}
-            onMinus={() => onMinus(arcane, setArcane, currentClass?.class_arcane)}
+            onMinus={() =>
+              onMinus(arcane, setArcane, currentClass?.class_arcane)
+            }
           />
+          <DefaultText style={style.general_stats} color={'#b79e1f'}>GENERAL STATS</DefaultText>
+          <View style={style.stats_container}>
+            <Stat
+              value={HP}
+              text={'HP'}
+              color={colors.red}
+              containerStyle={[
+                style.stat,
+                {width: (Dimensions.get('window').width - 90) / 2},
+              ]}
+              textStyle={style.stat_text}
+            />
+            <Stat
+              value={equipLoad}
+              text={'Equip load'}
+              color={colors.light_brown}
+              containerStyle={[
+                style.stat,
+                {width: (Dimensions.get('window').width - 90) / 2},
+              ]}
+              textStyle={style.stat_text}
+            />
+            <Stat
+              value={FP}
+              text={'FP'}
+              color={colors.blue}
+              containerStyle={[
+                style.stat,
+                {width: (Dimensions.get('window').width - 90) / 2},
+              ]}
+              textStyle={style.stat_text}
+            />
+            <Stat
+              value={discovery}
+              text={'Discovery'}
+              color={colors.silver}
+              containerStyle={[
+                style.stat,
+                {width: (Dimensions.get('window').width - 90) / 2},
+              ]}
+              textStyle={style.stat_text}
+            />
+            <Stat
+              value={stamina}
+              text={'Stamina'}
+              color={colors.green}
+              containerStyle={[
+                style.stat,
+                {width: (Dimensions.get('window').width - 90) / 2},
+              ]}
+              textStyle={style.stat_text}
+            />
+          </View>
         </CardScroll>
       ) : (
         <Card style={style.card_class_loading}>
@@ -247,9 +372,7 @@ export default function ClassPage({ route, navigation }) {
       <DefaultButton
         styles={style.confirm_button}
         label={'Save changes'}
-        onClick={() =>
-          !isLoading && selectClassButton('BuildSelectionScreen')
-        }
+        onClick={() => !isLoading && selectClassButton('BuildSelectionScreen')}
       />
     </View>
   );
