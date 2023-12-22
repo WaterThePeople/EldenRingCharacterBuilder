@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View } from 'react-native';
 import style from './ClassPage.sass';
 import SelectDropdown from 'react-native-select-dropdown';
 import DropdownIcon from '../../components/DropdownIcon';
@@ -8,8 +8,8 @@ import DefaultText from '../../components/DefaultText';
 import DefaultButton from '../../components/DefaultButton';
 import CardScroll from '../../components/CardScroll';
 import GoBackButton from '../../components/GoBackButton';
-import {Dimensions} from 'react-native';
-import {getData, selectClass, getCurrentClass} from '../../../firebase';
+import { Dimensions } from 'react-native';
+import { getData, selectClass, getCurrentClass } from '../../../firebase';
 import Loader from '../../components/Loader';
 import Card from '../../components/Card';
 import Stat from '../../components/Stat';
@@ -20,10 +20,15 @@ import {
   calculate_stamina,
   calculate_equip_load,
   calculate_discovery,
+  calculate_physical_defense,
+  calculate_magical_defense,
+  calculate_fire_defense,
+  calculate_lightning_defense,
+  calculate_holy_defense,
 } from '../../constantData/statsEquations';
 
-export default function ClassPage({route, navigation}) {
-  const {save_id} = route.params;
+export default function ClassPage({ route, navigation }) {
+  const { save_id } = route.params;
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -48,6 +53,11 @@ export default function ClassPage({route, navigation}) {
   const [stamina, setStamina] = useState('');
   const [equipLoad, setEquipLoad] = useState('');
   const [discovery, setDiscovery] = useState('');
+  const [physicalDefense, setPhysicalDefense] = useState('')
+  const [magicalDefense, setMagicalDefense] = useState('')
+  const [fireDefense, setFireDefense] = useState('')
+  const [lightningDefense, setLightningDefense] = useState('')
+  const [holyDefense, setHolyDefense] = useState('')
 
   const selectClassButton = () => {
     const temp = {
@@ -183,6 +193,26 @@ export default function ClassPage({route, navigation}) {
     setDiscovery(calculate_discovery(parseInt(arcane)));
   }, [arcane]);
 
+  useEffect(() => {
+    setPhysicalDefense(calculate_physical_defense(parseInt(level), parseInt(strength)));
+  }, [level, strength]);
+
+  useEffect(() => {
+    setMagicalDefense(calculate_magical_defense(parseInt(level), parseInt(intelligence)));
+  }, [level, intelligence]);
+
+  useEffect(() => {
+    setFireDefense(calculate_fire_defense(parseInt(level), parseInt(vigor)));
+  }, [level, vigor]);
+
+  useEffect(() => {
+    setLightningDefense(calculate_lightning_defense(parseInt(level)));
+  }, [level]);
+
+  useEffect(() => {
+    setHolyDefense(calculate_holy_defense(parseInt(level), parseInt(arcane)));
+  }, [level, arcane]);
+
   return (
     <View style={style.container}>
       <View style={style.title_container}>
@@ -199,7 +229,7 @@ export default function ClassPage({route, navigation}) {
             }}
             buttonStyle={[
               style.dropdown_button,
-              {width: Dimensions.get('window').width - 90},
+              { width: Dimensions.get('window').width - 90 },
             ]}
             buttonTextStyle={style.dropdown_button_text}
             dropdownStyle={style.dropdown}
@@ -217,7 +247,7 @@ export default function ClassPage({route, navigation}) {
         )}
       </View>
       {!isLoading ? (
-        <CardScroll container_style={style.card_container} style={style.card}>
+        <CardScroll container_style={[style.card_container]} style={style.card}>
           <ClassStatInfo
             stat={'Level'}
             value={currentClass ? currentClass?.class_level : '0'}
@@ -318,7 +348,7 @@ export default function ClassPage({route, navigation}) {
               color={colors.red}
               containerStyle={[
                 style.stat,
-                {width: (Dimensions.get('window').width - 90) / 2},
+                { width: (Dimensions.get('window').width - 90) / 2 },
               ]}
               textStyle={style.stat_text}
             />
@@ -328,7 +358,7 @@ export default function ClassPage({route, navigation}) {
               color={colors.light_brown}
               containerStyle={[
                 style.stat,
-                {width: (Dimensions.get('window').width - 90) / 2},
+                { width: (Dimensions.get('window').width - 90) / 2 },
               ]}
               textStyle={style.stat_text}
             />
@@ -338,7 +368,7 @@ export default function ClassPage({route, navigation}) {
               color={colors.blue}
               containerStyle={[
                 style.stat,
-                {width: (Dimensions.get('window').width - 90) / 2},
+                { width: (Dimensions.get('window').width - 90) / 2 },
               ]}
               textStyle={style.stat_text}
             />
@@ -348,7 +378,7 @@ export default function ClassPage({route, navigation}) {
               color={colors.silver}
               containerStyle={[
                 style.stat,
-                {width: (Dimensions.get('window').width - 90) / 2},
+                { width: (Dimensions.get('window').width - 90) / 2 },
               ]}
               textStyle={style.stat_text}
             />
@@ -358,10 +388,94 @@ export default function ClassPage({route, navigation}) {
               color={colors.green}
               containerStyle={[
                 style.stat,
-                {width: (Dimensions.get('window').width - 90) / 2},
+                { width: (Dimensions.get('window').width - 90) / 2 },
               ]}
               textStyle={style.stat_text}
             />
+          </View>
+          <View style={[style.defense_and_restitance_container]}>
+            <View style={style.defense_container}>
+              <DefaultText style={[style.general_stats,{ width: (Dimensions.get('window').width - 90) / 2 }]} color={'#b79e1f'}>DEFENSE</DefaultText>
+              <Stat
+                value={physicalDefense}
+                text={'Physical'}
+                containerStyle={[
+                  style.stat,
+                  { width: (Dimensions.get('window').width - 90) / 2 },
+                ]}
+                textStyle={style.stat_text}
+              />
+              <Stat
+                value={physicalDefense}
+                text={'vs Strike'}
+                containerStyle={[
+                  style.stat,
+                  { width: (Dimensions.get('window').width - 90) / 2 },
+                ]}
+                textStyle={style.stat_text}
+              />
+              <Stat
+                value={physicalDefense}
+                text={'vs Slash'}
+                containerStyle={[
+                  style.stat,
+                  { width: (Dimensions.get('window').width - 90) / 2 },
+                ]}
+                textStyle={style.stat_text}
+              />
+              <Stat
+                value={physicalDefense}
+                text={'vs Pierce'}
+                containerStyle={[
+                  style.stat,
+                  { width: (Dimensions.get('window').width - 90) / 2 },
+                ]}
+                textStyle={style.stat_text}
+              />
+              <Stat
+                value={magicalDefense}
+                text={'Magical'}
+                color={colors.light_blue}
+                containerStyle={[
+                  style.stat,
+                  { width: (Dimensions.get('window').width - 90) / 2 },
+                ]}
+                textStyle={style.stat_text}
+              />
+              <Stat
+                value={fireDefense}
+                text={'Fire'}
+                color={colors.orange}
+                containerStyle={[
+                  style.stat,
+                  { width: (Dimensions.get('window').width - 90) / 2 },
+                ]}
+                textStyle={style.stat_text}
+              />
+              <Stat
+                value={lightningDefense}
+                text={'Lightning'}
+                color={colors.yellow}
+                containerStyle={[
+                  style.stat,
+                  { width: (Dimensions.get('window').width - 90) / 2 },
+                ]}
+                textStyle={style.stat_text}
+              />
+              <Stat
+                value={holyDefense}
+                text={'Holy'}
+                color={colors.light_yellow}
+                containerStyle={[
+                  style.stat,
+                  { width: (Dimensions.get('window').width - 90) / 2 },
+                ]}
+                textStyle={style.stat_text}
+              />
+            </View>
+            <View style={style.resistance_container}>
+              <DefaultText style={[style.general_stats,{ width: (Dimensions.get('window').width - 90) / 2 }]} color={'#b79e1f'}>RESISTANCE</DefaultText>
+            </View>
           </View>
         </CardScroll>
       ) : (
