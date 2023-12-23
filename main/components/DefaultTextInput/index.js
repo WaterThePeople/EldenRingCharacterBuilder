@@ -1,5 +1,5 @@
 import React from 'react';
-import {TextInput} from 'react-native';
+import { TextInput } from 'react-native';
 import { Dimensions } from 'react-native';
 
 export default function DefaultTextInput({
@@ -12,13 +12,14 @@ export default function DefaultTextInput({
   goBackButtonExist,
   buttonSize = 90,
   maxLength = 100,
+  isNumeric
 }) {
   return (
     <>
       <TextInput
         maxLength={maxLength}
         style={[
-          {fontFamily: 'GARAM', color: 'white', fontSize: 30},
+          { fontFamily: 'GARAM', color: 'white', fontSize: 30 },
           style,
           {
             width: goBackButtonExist
@@ -26,7 +27,8 @@ export default function DefaultTextInput({
               : Dimensions.get('window').width - buttonSize,
           },
         ]}
-        theme={{colors: {text: '#fff'}}}
+        keyboardType={isNumeric && 'numeric'}
+        theme={{ colors: { text: '#fff' } }}
         placeholder={placeholder}
         value={value}
         onChangeText={onChange}

@@ -25,6 +25,10 @@ import {
   calculate_fire_defense,
   calculate_lightning_defense,
   calculate_holy_defense,
+  calculate_immunity,
+  calculate_robustness,
+  calculate_focus,
+  calculate_vitality,
 } from '../../constantData/statsEquations';
 
 export default function ClassPage({ route, navigation }) {
@@ -58,6 +62,10 @@ export default function ClassPage({ route, navigation }) {
   const [fireDefense, setFireDefense] = useState('')
   const [lightningDefense, setLightningDefense] = useState('')
   const [holyDefense, setHolyDefense] = useState('')
+  const [immunity, setImmunity] = useState('')
+  const [robustness, setRobustness] = useState('')
+  const [focus, setFocus] = useState('')
+  const [vitality, setVitality] = useState('')
 
   const selectClassButton = () => {
     const temp = {
@@ -213,281 +221,335 @@ export default function ClassPage({ route, navigation }) {
     setHolyDefense(calculate_holy_defense(parseInt(level), parseInt(arcane)));
   }, [level, arcane]);
 
+  useEffect(() => {
+    setImmunity(calculate_immunity(parseInt(level), parseInt(vigor)));
+  }, [level, vigor]);
+
+  useEffect(() => {
+    setRobustness(calculate_robustness(parseInt(level), parseInt(endurance)));
+  }, [level, endurance]);
+
+  useEffect(() => {
+    setFocus(calculate_focus(parseInt(level), parseInt(mind)));
+  }, [level, mind]);
+
+  useEffect(() => {
+    setVitality(calculate_vitality(parseInt(level), parseInt(arcane)));
+  }, [level, arcane]);
+
   return (
-    <View style={style.container}>
-      <View style={style.title_container}>
-        <GoBackButton goBackFunction={() => navigation.goBack()} />
-        {isLoading ? (
-          <Card style={style.card_loading}>
-            <Loader size={50} />
-          </Card>
+    <>
+      <View style={style.container}>
+        <View style={style.title_container}>
+          <GoBackButton goBackFunction={() => navigation.goBack()} />
+          {isLoading ? (
+            <Card style={style.card_loading}>
+              <Loader size={50} />
+            </Card>
+          ) : (
+            <SelectDropdown
+              data={classesList}
+              onSelect={(selectedItem, index) => {
+                changeCurrentClass(classesData?.data?.[index]);
+              }}
+              buttonStyle={[
+                style.dropdown_button,
+                { width: Dimensions.get('window').width - 90 },
+              ]}
+              buttonTextStyle={style.dropdown_button_text}
+              dropdownStyle={style.dropdown}
+              defaultButtonText={
+                currentClass?.class_name ? currentClass?.class_name : ''
+              }
+              rowStyle={style.dropdown_row}
+              rowTextStyle={style.dropdown_row_text}
+              statusBarTranslucent={true}
+              renderDropdownIcon={() => DropdownIcon(isDropdownOpen)}
+              dropdownOverlayColor={'none'}
+              onFocus={() => setIsDropdownOpen(true)}
+              onBlur={() => setIsDropdownOpen(false)}
+            />
+          )}
+        </View>
+        {!isLoading ? (
+          <CardScroll container_style={[style.card_container]} style={style.card}>
+            <ClassStatInfo
+              stat={'Level'}
+              value={currentClass ? currentClass?.class_level : '0'}
+              totalValue={currentStats ? level : '0'}
+            />
+            <View style={style.tip_container}>
+              <DefaultText style={style.tip_text}>Stat</DefaultText>
+              <DefaultText style={style.tip_text_initial}>Initial</DefaultText>
+              <DefaultText style={style.tip_text_total}>Total</DefaultText>
+            </View>
+            <ClassStatInfo
+              stat={'Vigor'}
+              value={currentClass ? currentClass?.class_vigor : '0'}
+              totalValue={currentStats ? vigor : '0'}
+              onPlus={() => onPlus(vigor, setVigor, currentClass?.class_vigor)}
+              onMinus={() => onMinus(vigor, setVigor, currentClass?.class_vigor)}
+              onNumberInput={setVigor}
+            />
+            <ClassStatInfo
+              stat={'Mind'}
+              value={currentClass ? currentClass?.class_mind : '0'}
+              totalValue={currentClass ? mind : '0'}
+              onPlus={() => onPlus(mind, setMind, currentClass?.class_mind)}
+              onMinus={() => onMinus(mind, setMind, currentClass?.class_mind)}
+              onNumberInput={setMind}
+            />
+            <ClassStatInfo
+              stat={'Endurance'}
+              value={currentClass ? currentClass?.class_endurance : '0'}
+              totalValue={currentStats ? endurance : '0'}
+              onPlus={() =>
+                onPlus(endurance, setEndurance, currentClass?.class_endurance)
+              }
+              onMinus={() =>
+                onMinus(endurance, setEndurance, currentClass?.class_endurance)
+              }
+              onNumberInput={setEndurance}
+            />
+            <ClassStatInfo
+              stat={'Strength'}
+              value={currentClass ? currentClass?.class_strength : '0'}
+              totalValue={currentStats ? strength : '0'}
+              onPlus={() =>
+                onPlus(strength, setStrength, currentClass?.class_strength)
+              }
+              onMinus={() =>
+                onMinus(strength, setStrength, currentClass?.class_strength)
+              }
+              onNumberInput={setStrength}
+            />
+            <ClassStatInfo
+              stat={'Dexterity'}
+              value={currentClass ? currentClass?.class_dexterity : '0'}
+              totalValue={currentStats ? dexterity : '0'}
+              onPlus={() =>
+                onPlus(dexterity, setDexterity, currentClass?.class_dexterity)
+              }
+              onMinus={() =>
+                onMinus(dexterity, setDexterity, currentClass?.class_dexterity)
+              }
+              onNumberInput={setDexterity}
+            />
+            <ClassStatInfo
+              stat={'Intelligence'}
+              value={currentClass ? currentClass?.class_intelligence : '0'}
+              totalValue={currentStats ? intelligence : '0'}
+              onPlus={() =>onPlus(intelligence,setIntelligence,currentClass?.class_intelligence)}
+              onMinus={() =>onMinus(intelligence,setIntelligence,currentClass?.class_intelligence)}
+              onNumberInput={setIntelligence}
+            />
+            <ClassStatInfo
+              stat={'Faith'}
+              value={currentClass ? currentClass?.class_faith : '0'}
+              totalValue={currentStats ? faith : '0'}
+              onPlus={() => onPlus(faith, setFaith, currentClass?.class_faith)}
+              onMinus={() => onMinus(faith, setFaith, currentClass?.class_faith)}
+              onNumberInput={setFaith}
+            />
+            <ClassStatInfo
+              stat={'Arcane'}
+              value={currentClass ? currentClass?.class_arcane : '0'}
+              totalValue={currentStats ? arcane : '0'}
+              onPlus={() => onPlus(arcane, setArcane, currentClass?.class_arcane)}
+              onMinus={() =>
+                onMinus(arcane, setArcane, currentClass?.class_arcane)
+              }
+              onNumberInput={setArcane}
+            />
+            <DefaultText style={style.general_stats} color={'#b79e1f'}>GENERAL STATS</DefaultText>
+            <View style={style.stats_container}>
+              <Stat
+                value={HP}
+                text={'HP'}
+                color={colors.red}
+                containerStyle={[
+                  style.stat,
+                  { width: (Dimensions.get('window').width - 90) / 2 },
+                ]}
+                textStyle={style.stat_text}
+              />
+              <Stat
+                value={equipLoad}
+                text={'Equip load'}
+                color={colors.light_brown}
+                containerStyle={[
+                  style.stat,
+                  { width: (Dimensions.get('window').width - 90) / 2 },
+                ]}
+                textStyle={style.stat_text}
+              />
+              <Stat
+                value={FP}
+                text={'FP'}
+                color={colors.blue}
+                containerStyle={[
+                  style.stat,
+                  { width: (Dimensions.get('window').width - 90) / 2 },
+                ]}
+                textStyle={style.stat_text}
+              />
+              <Stat
+                value={discovery}
+                text={'Discovery'}
+                color={colors.silver}
+                containerStyle={[
+                  style.stat,
+                  { width: (Dimensions.get('window').width - 90) / 2 },
+                ]}
+                textStyle={style.stat_text}
+              />
+              <Stat
+                value={stamina}
+                text={'Stamina'}
+                color={colors.green}
+                containerStyle={[
+                  style.stat,
+                  { width: (Dimensions.get('window').width - 90) / 2 },
+                ]}
+                textStyle={style.stat_text}
+              />
+            </View>
+            <View style={[style.defense_and_restitance_container]}>
+              <View style={style.defense_container}>
+                <DefaultText style={[style.general_stats, { width: (Dimensions.get('window').width - 90) / 2 }]} color={'#b79e1f'}>DEFENSE</DefaultText>
+                <Stat
+                  value={physicalDefense}
+                  text={'Physical'}
+                  containerStyle={[
+                    style.stat,
+                    { width: (Dimensions.get('window').width - 90) / 2 },
+                  ]}
+                  textStyle={style.stat_text}
+                />
+                <Stat
+                  value={physicalDefense}
+                  text={'vs Strike'}
+                  containerStyle={[
+                    style.stat,
+                    { width: (Dimensions.get('window').width - 90) / 2 },
+                  ]}
+                  textStyle={style.stat_text}
+                />
+                <Stat
+                  value={physicalDefense}
+                  text={'vs Slash'}
+                  containerStyle={[
+                    style.stat,
+                    { width: (Dimensions.get('window').width - 90) / 2 },
+                  ]}
+                  textStyle={style.stat_text}
+                />
+                <Stat
+                  value={physicalDefense}
+                  text={'vs Pierce'}
+                  containerStyle={[
+                    style.stat,
+                    { width: (Dimensions.get('window').width - 90) / 2 },
+                  ]}
+                  textStyle={style.stat_text}
+                />
+                <Stat
+                  value={magicalDefense}
+                  text={'Magical'}
+                  color={colors.light_blue}
+                  containerStyle={[
+                    style.stat,
+                    { width: (Dimensions.get('window').width - 90) / 2 },
+                  ]}
+                  textStyle={style.stat_text}
+                />
+                <Stat
+                  value={fireDefense}
+                  text={'Fire'}
+                  color={colors.orange}
+                  containerStyle={[
+                    style.stat,
+                    { width: (Dimensions.get('window').width - 90) / 2 },
+                  ]}
+                  textStyle={style.stat_text}
+                />
+                <Stat
+                  value={lightningDefense}
+                  text={'Lightning'}
+                  color={colors.yellow}
+                  containerStyle={[
+                    style.stat,
+                    { width: (Dimensions.get('window').width - 90) / 2 },
+                  ]}
+                  textStyle={style.stat_text}
+                />
+                <Stat
+                  value={holyDefense}
+                  text={'Holy'}
+                  color={colors.light_yellow}
+                  containerStyle={[
+                    style.stat,
+                    { width: (Dimensions.get('window').width - 90) / 2 },
+                  ]}
+                  textStyle={style.stat_text}
+                />
+              </View>
+              <View style={style.resistance_container}>
+                <DefaultText style={[style.general_stats, { width: (Dimensions.get('window').width - 90) / 2 }]} color={'#b79e1f'}>RESISTANCE</DefaultText>
+                <Stat
+                  value={immunity}
+                  text={'Immunity'}
+                  color={colors.gold}
+                  containerStyle={[
+                    style.stat,
+                    { width: (Dimensions.get('window').width - 90) / 2 },
+                  ]}
+                  textStyle={style.stat_text}
+                />
+                <Stat
+                  value={robustness}
+                  text={'Robustness'}
+                  color={colors.gold}
+                  containerStyle={[
+                    style.stat,
+                    { width: (Dimensions.get('window').width - 90) / 2 },
+                  ]}
+                  textStyle={style.stat_text}
+                />
+                <Stat
+                  value={focus}
+                  text={'Focus'}
+                  color={colors.gold}
+                  containerStyle={[
+                    style.stat,
+                    { width: (Dimensions.get('window').width - 90) / 2 },
+                  ]}
+                  textStyle={style.stat_text}
+                />
+                <Stat
+                  value={vitality}
+                  text={'Vitality'}
+                  color={colors.gold}
+                  containerStyle={[
+                    style.stat,
+                    { width: (Dimensions.get('window').width - 90) / 2 },
+                  ]}
+                  textStyle={style.stat_text}
+                />
+              </View>
+            </View>
+          </CardScroll>
         ) : (
-          <SelectDropdown
-            data={classesList}
-            onSelect={(selectedItem, index) => {
-              changeCurrentClass(classesData?.data?.[index]);
-            }}
-            buttonStyle={[
-              style.dropdown_button,
-              { width: Dimensions.get('window').width - 90 },
-            ]}
-            buttonTextStyle={style.dropdown_button_text}
-            dropdownStyle={style.dropdown}
-            defaultButtonText={
-              currentClass?.class_name ? currentClass?.class_name : ''
-            }
-            rowStyle={style.dropdown_row}
-            rowTextStyle={style.dropdown_row_text}
-            statusBarTranslucent={true}
-            renderDropdownIcon={() => DropdownIcon(isDropdownOpen)}
-            dropdownOverlayColor={'none'}
-            onFocus={() => setIsDropdownOpen(true)}
-            onBlur={() => setIsDropdownOpen(false)}
-          />
+          <Card style={style.card_class_loading}>
+            <Loader />
+          </Card>
         )}
+        <DefaultButton
+          styles={style.confirm_button}
+          label={'Save changes'}
+          onClick={() => !isLoading && selectClassButton('BuildSelectionScreen')}
+        />
       </View>
-      {!isLoading ? (
-        <CardScroll container_style={[style.card_container]} style={style.card}>
-          <ClassStatInfo
-            stat={'Level'}
-            value={currentClass ? currentClass?.class_level : '0'}
-            totalValue={currentStats ? level : '0'}
-          />
-          <View style={style.tip_container}>
-            <DefaultText style={style.tip_text}>Stat</DefaultText>
-            <DefaultText style={style.tip_text_initial}>Initial</DefaultText>
-            <DefaultText style={style.tip_text_total}>Total</DefaultText>
-          </View>
-          <ClassStatInfo
-            stat={'Vigor'}
-            value={currentClass ? currentClass?.class_vigor : '0'}
-            totalValue={currentStats ? vigor : '0'}
-            onPlus={() => onPlus(vigor, setVigor, currentClass?.class_vigor)}
-            onMinus={() => onMinus(vigor, setVigor, currentClass?.class_vigor)}
-          />
-          <ClassStatInfo
-            stat={'Mind'}
-            value={currentClass ? currentClass?.class_mind : '0'}
-            totalValue={currentClass ? mind : '0'}
-            onPlus={() => onPlus(mind, setMind, currentClass?.class_mind)}
-            onMinus={() => onMinus(mind, setMind, currentClass?.class_mind)}
-          />
-          <ClassStatInfo
-            stat={'Endurance'}
-            value={currentClass ? currentClass?.class_endurance : '0'}
-            totalValue={currentStats ? endurance : '0'}
-            onPlus={() =>
-              onPlus(endurance, setEndurance, currentClass?.class_endurance)
-            }
-            onMinus={() =>
-              onMinus(endurance, setEndurance, currentClass?.class_endurance)
-            }
-          />
-          <ClassStatInfo
-            stat={'Strength'}
-            value={currentClass ? currentClass?.class_strength : '0'}
-            totalValue={currentStats ? strength : '0'}
-            onPlus={() =>
-              onPlus(strength, setStrength, currentClass?.class_strength)
-            }
-            onMinus={() =>
-              onMinus(strength, setStrength, currentClass?.class_strength)
-            }
-          />
-          <ClassStatInfo
-            stat={'Dexterity'}
-            value={currentClass ? currentClass?.class_dexterity : '0'}
-            totalValue={currentStats ? dexterity : '0'}
-            onPlus={() =>
-              onPlus(dexterity, setDexterity, currentClass?.class_dexterity)
-            }
-            onMinus={() =>
-              onMinus(dexterity, setDexterity, currentClass?.class_dexterity)
-            }
-          />
-          <ClassStatInfo
-            stat={'Intelligence'}
-            value={currentClass ? currentClass?.class_intelligence : '0'}
-            totalValue={currentStats ? intelligence : '0'}
-            onPlus={() =>
-              onPlus(
-                intelligence,
-                setIntelligence,
-                currentClass?.class_intelligence,
-              )
-            }
-            onMinus={() =>
-              onMinus(
-                intelligence,
-                setIntelligence,
-                currentClass?.class_intelligence,
-              )
-            }
-          />
-          <ClassStatInfo
-            stat={'Faith'}
-            value={currentClass ? currentClass?.class_faith : '0'}
-            totalValue={currentStats ? faith : '0'}
-            onPlus={() => onPlus(faith, setFaith, currentClass?.class_faith)}
-            onMinus={() => onMinus(faith, setFaith, currentClass?.class_faith)}
-          />
-          <ClassStatInfo
-            stat={'Arcane'}
-            value={currentClass ? currentClass?.class_arcane : '0'}
-            totalValue={currentStats ? arcane : '0'}
-            onPlus={() => onPlus(arcane, setArcane, currentClass?.class_arcane)}
-            onMinus={() =>
-              onMinus(arcane, setArcane, currentClass?.class_arcane)
-            }
-          />
-          <DefaultText style={style.general_stats} color={'#b79e1f'}>GENERAL STATS</DefaultText>
-          <View style={style.stats_container}>
-            <Stat
-              value={HP}
-              text={'HP'}
-              color={colors.red}
-              containerStyle={[
-                style.stat,
-                { width: (Dimensions.get('window').width - 90) / 2 },
-              ]}
-              textStyle={style.stat_text}
-            />
-            <Stat
-              value={equipLoad}
-              text={'Equip load'}
-              color={colors.light_brown}
-              containerStyle={[
-                style.stat,
-                { width: (Dimensions.get('window').width - 90) / 2 },
-              ]}
-              textStyle={style.stat_text}
-            />
-            <Stat
-              value={FP}
-              text={'FP'}
-              color={colors.blue}
-              containerStyle={[
-                style.stat,
-                { width: (Dimensions.get('window').width - 90) / 2 },
-              ]}
-              textStyle={style.stat_text}
-            />
-            <Stat
-              value={discovery}
-              text={'Discovery'}
-              color={colors.silver}
-              containerStyle={[
-                style.stat,
-                { width: (Dimensions.get('window').width - 90) / 2 },
-              ]}
-              textStyle={style.stat_text}
-            />
-            <Stat
-              value={stamina}
-              text={'Stamina'}
-              color={colors.green}
-              containerStyle={[
-                style.stat,
-                { width: (Dimensions.get('window').width - 90) / 2 },
-              ]}
-              textStyle={style.stat_text}
-            />
-          </View>
-          <View style={[style.defense_and_restitance_container]}>
-            <View style={style.defense_container}>
-              <DefaultText style={[style.general_stats,{ width: (Dimensions.get('window').width - 90) / 2 }]} color={'#b79e1f'}>DEFENSE</DefaultText>
-              <Stat
-                value={physicalDefense}
-                text={'Physical'}
-                containerStyle={[
-                  style.stat,
-                  { width: (Dimensions.get('window').width - 90) / 2 },
-                ]}
-                textStyle={style.stat_text}
-              />
-              <Stat
-                value={physicalDefense}
-                text={'vs Strike'}
-                containerStyle={[
-                  style.stat,
-                  { width: (Dimensions.get('window').width - 90) / 2 },
-                ]}
-                textStyle={style.stat_text}
-              />
-              <Stat
-                value={physicalDefense}
-                text={'vs Slash'}
-                containerStyle={[
-                  style.stat,
-                  { width: (Dimensions.get('window').width - 90) / 2 },
-                ]}
-                textStyle={style.stat_text}
-              />
-              <Stat
-                value={physicalDefense}
-                text={'vs Pierce'}
-                containerStyle={[
-                  style.stat,
-                  { width: (Dimensions.get('window').width - 90) / 2 },
-                ]}
-                textStyle={style.stat_text}
-              />
-              <Stat
-                value={magicalDefense}
-                text={'Magical'}
-                color={colors.light_blue}
-                containerStyle={[
-                  style.stat,
-                  { width: (Dimensions.get('window').width - 90) / 2 },
-                ]}
-                textStyle={style.stat_text}
-              />
-              <Stat
-                value={fireDefense}
-                text={'Fire'}
-                color={colors.orange}
-                containerStyle={[
-                  style.stat,
-                  { width: (Dimensions.get('window').width - 90) / 2 },
-                ]}
-                textStyle={style.stat_text}
-              />
-              <Stat
-                value={lightningDefense}
-                text={'Lightning'}
-                color={colors.yellow}
-                containerStyle={[
-                  style.stat,
-                  { width: (Dimensions.get('window').width - 90) / 2 },
-                ]}
-                textStyle={style.stat_text}
-              />
-              <Stat
-                value={holyDefense}
-                text={'Holy'}
-                color={colors.light_yellow}
-                containerStyle={[
-                  style.stat,
-                  { width: (Dimensions.get('window').width - 90) / 2 },
-                ]}
-                textStyle={style.stat_text}
-              />
-            </View>
-            <View style={style.resistance_container}>
-              <DefaultText style={[style.general_stats,{ width: (Dimensions.get('window').width - 90) / 2 }]} color={'#b79e1f'}>RESISTANCE</DefaultText>
-            </View>
-          </View>
-        </CardScroll>
-      ) : (
-        <Card style={style.card_class_loading}>
-          <Loader />
-        </Card>
-      )}
-      <DefaultButton
-        styles={style.confirm_button}
-        label={'Save changes'}
-        onClick={() => !isLoading && selectClassButton('BuildSelectionScreen')}
-      />
-    </View>
+    </>
   );
 }
