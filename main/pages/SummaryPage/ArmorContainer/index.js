@@ -24,7 +24,7 @@ export default function ArmorContainer({ data, containerStyle }) {
                     Armor
                 </DefaultText>
             </View>
-            <View style={style.items_container}>
+            <View style={[style.items_container, { flex: 1 }]}>
                 <View style={style.item_row}>
                     <SummaryItem
                         image_url={helmet && helmet?.image_url}

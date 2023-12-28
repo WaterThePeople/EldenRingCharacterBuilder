@@ -28,7 +28,7 @@ export default function WeaponsContainer({ data, containerStyle }) {
           Weapons
         </DefaultText>
       </View>
-      <View style={style.items_container}>
+      <View style={[style.items_container,{flex: 1}]}>
         <View style={style.item_row}>
           <SummaryItem
             image_url={weapon_r1 && weapon_r1?.image_url}

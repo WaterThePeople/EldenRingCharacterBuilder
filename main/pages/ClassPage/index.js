@@ -396,7 +396,7 @@ export default function ClassPage({ route, navigation }) {
               <Stat
                 value={discovery}
                 text={'Discovery'}
-                color={colors.silver}
+                color={colors.light_pink}
                 containerStyle={[
                   style.stat,
                   { width: (Dimensions.get('window').width - 90) / 2 },

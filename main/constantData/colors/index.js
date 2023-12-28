@@ -11,6 +11,8 @@ const colors =
     orange: '#ff9933',
     yellow: '#ffff00',
     light_yellow: '#ffcc99',
+    gray_green: '#536e5a',
+    light_pink: '#d4a1a8'
 };
 
 export default colors;
