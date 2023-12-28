@@ -55,7 +55,7 @@ export default function ClassStatInfo({ stat, value, totalValue, onPlus, onMinus
                             <DefaultText style={style.text_total} autoFont={true}>{totalValue}</DefaultText>
                         </Pressable>
                     ) : (
-                        <DefaultText style={style.text_total} autoFont={true}>{totalValue}</DefaultText>
+                        <DefaultText style={style.default_text_total} autoFont={true}>{totalValue}</DefaultText>
                     )}
                     {onPlus && (
                         <Pressable onPress={onPlus}>
@@ -68,7 +68,7 @@ export default function ClassStatInfo({ stat, value, totalValue, onPlus, onMinus
                 visible={isVisible}
                 setVisible={setIsVisible}
                 text={'Change value of ' + stat}
-                inputPlaceholder={totalValue}
+                inputPlaceholder={String(totalValue)}
                 confirmLabel={'Confirm'}
                 confirmColor={'#b79e1f'}
                 onConfirm={onConfirm}
