@@ -67,6 +67,7 @@ export default function SummaryPage({ route, navigation }) {
           />
           <ClassContainer
             statsData={currentClass?.stats}
+            talismansData={currentTalismans}
             containerStyle={[{ width: (Dimensions.get('window').width - 90) / 2 },]}
           />
         </View>
@@ -77,6 +78,9 @@ export default function SummaryPage({ route, navigation }) {
           />
           <GeneralStatsContainer
             data={currentClass?.stats}
+            talismansData={currentTalismans}
+            weaponsData={currentWeapons}
+            armorData={currentArmor}
             containerStyle={[{ width: (Dimensions.get('window').width - 90) / 2 },]}
           />
         </View>

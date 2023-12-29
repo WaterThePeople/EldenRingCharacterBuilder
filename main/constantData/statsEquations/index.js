@@ -37,10 +37,10 @@ const calculate_stamina = stamina => {
   if (stamina > 15 && stamina <= 35) {
     return Math.floor(105 + 25 * ((stamina - 15) / 15));
   }
-  if (stamina > 35 && stamina <= 60) {
+  if (stamina > 35 && stamina <= 50) {
     return Math.floor(130 + 25 * ((stamina - 30) / 20));
   }
-  if (stamina > 60 && stamina <= 99) {
+  if (stamina > 50 && stamina <= 99) {
     return Math.floor(155 + 15 * ((stamina - 50) / 49));
   }
   return '0';
