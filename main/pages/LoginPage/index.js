@@ -21,6 +21,7 @@ export default function LoginPage({ route, navigation }) {
     const [password, setPassword] = useState('')
 
     const [wrongLogin, setWrongLogin] = useState(false)
+    const [internetConnection, setInternetConnection] = useState(true)
 
     const login = () => {
         handleLogin();
@@ -56,6 +57,14 @@ export default function LoginPage({ route, navigation }) {
         }
     }, [isFocused]);
 
+    useEffect(() => {
+        if (netInfo?.isConnected === true) {
+            setInternetConnection(true)
+        } else if(netInfo?.isConnected === false) {
+            setInternetConnection(false)
+        }
+    }, [netInfo?.isConnected]);
+
     return (
         <>
             <Card style={style.card}>
@@ -76,7 +85,7 @@ export default function LoginPage({ route, navigation }) {
                         </View>
                     )}
 
-                    {!netInfo?.isConnected && (
+                    {!internetConnection && (
                         <View style={style.error_container}>
                             <DefaultText style={style.error_text} autoFont>You aren't conncted to the internet!</DefaultText>
                             <DefaultText style={style.error_text} autoFont>Check your wifi connection to use the app!</DefaultText>

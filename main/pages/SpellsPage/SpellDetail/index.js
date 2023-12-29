@@ -135,7 +135,7 @@ export default function SpellDetail({ route, navigation }) {
                                     numberOfLines={0}
                                     style={style.text}
                                     color={'#978563'}>
-                                    Intelligence 
+                                    Intelligence
                                 </DefaultText>
                                 <DefaultText
                                     numberOfLines={0}
@@ -177,11 +177,13 @@ export default function SpellDetail({ route, navigation }) {
                 </View>
 
             </CardScroll>
-            <DefaultButton
-                styles={style.confirm_button}
-                label={'Select spell'}
-                onClick={() => confirmSpell()}
-            />
+            {slot != 'slot' && (
+                <DefaultButton
+                    styles={style.confirm_button}
+                    label={'Select spell'}
+                    onClick={() => confirmSpell()}
+                />
+            )}
         </View>
     );
 }

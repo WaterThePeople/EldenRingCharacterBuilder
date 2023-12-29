@@ -171,11 +171,13 @@ export default function ArmorDetail({ route, navigation }) {
                 </View>
 
             </CardScroll>
-            <DefaultButton
-                styles={style.confirm_button}
-                label={'Select ' + category_name}
-                onClick={() => confirmArmor()}
-            />
+            {save_id != 'save_id' && (
+                <DefaultButton
+                    styles={style.confirm_button}
+                    label={'Select ' + category_name}
+                    onClick={() => confirmArmor()}
+                />
+            )}
         </View>
     );
 }

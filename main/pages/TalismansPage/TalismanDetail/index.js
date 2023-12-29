@@ -80,13 +80,14 @@ export default function TalismanDetail({ route, navigation }) {
                         </View>
                     </View>
                 </View>
-
             </CardScroll>
-            <DefaultButton
-                styles={style.confirm_button}
-                label={'Select talisman'}
-                onClick={() => confirmTalisman()}
-            />
+            {slot != 'slot' && (
+                <DefaultButton
+                    styles={style.confirm_button}
+                    label={'Select talisman'}
+                    onClick={() => confirmTalisman()}
+                />
+            )}
         </View>
     );
 }

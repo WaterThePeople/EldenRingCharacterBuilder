@@ -3,8 +3,11 @@ import { View } from 'react-native';
 import style from './SpellsContainer.sass';
 import SummaryItem from '../../../components/SummaryItem';
 import DefaultText from '../../../components/DefaultText';
+import { useNavigation } from '@react-navigation/native';
 
 export default function SpellsContainer({ data, containerStyle }) {
+
+    const navigation = useNavigation();
 
     const [hasMoonOfNokstella, setHasMoonOfNokstella] = useState(false)
     const [slot1, setSlot1] = useState('')
@@ -38,6 +41,15 @@ export default function SpellsContainer({ data, containerStyle }) {
         setSlot12(data?.slot12)
     }, [data]);
 
+    const moveToSpellDetail = (spell) => {
+        navigation.navigate('SpellDetailScreen',
+            {
+                slot: 'slot',
+                spell: spell,
+                save_id: 'save_id',
+            })
+    };
+
     return (
         <View style={[style.container, containerStyle]}>
             <View style={style.title}>
@@ -49,62 +61,62 @@ export default function SpellsContainer({ data, containerStyle }) {
                 <View style={style.item_row}>
                     <SummaryItem
                         image_url={slot1 && slot1?.image_url}
-                        onClick={() => console.log('XD')}
+                        onClick={() => slot1 && moveToSpellDetail(slot1)}
                     />
                     <SummaryItem
                         image_url={slot2 && slot2?.image_url}
-                        onClick={() => console.log('XD')}
+                        onClick={() => slot2 && moveToSpellDetail(slot2)}
                     />
                 </View>
                 <View style={style.item_row}>
                     <SummaryItem
                         image_url={slot3 && slot3?.image_url}
-                        onClick={() => console.log('XD')}
+                        onClick={() => slot3 && moveToSpellDetail(slot3)}
                     />
                     <SummaryItem
                         image_url={slot4 && slot4?.image_url}
-                        onClick={() => console.log('XD')}
+                        onClick={() => slot4 && moveToSpellDetail(slot4)}
                     />
                 </View>
                 <View style={style.item_row}>
                     <SummaryItem
                         image_url={slot5 && slot5?.image_url}
-                        onClick={() => console.log('XD')}
+                        onClick={() => slot5 && moveToSpellDetail(slot5)}
                     />
                     <SummaryItem
                         image_url={slot6 && slot6?.image_url}
-                        onClick={() => console.log('XD')}
+                        onClick={() => slot6 && moveToSpellDetail(slot6)}
                     />
                 </View>
                 <View style={style.item_row}>
                     <SummaryItem
                         image_url={slot7 && slot7?.image_url}
-                        onClick={() => console.log('XD')}
+                        onClick={() => slot7 && moveToSpellDetail(slot7)}
                     />
                     <SummaryItem
                         image_url={slot8 && slot8?.image_url}
-                        onClick={() => console.log('XD')}
+                        onClick={() => slot8 && moveToSpellDetail(slot8)}
                     />
                 </View>
                 <View style={style.item_row}>
                     <SummaryItem
                         image_url={slot9 && slot9?.image_url}
-                        onClick={() => console.log('XD')}
+                        onClick={() => slot9 && moveToSpellDetail(slot9)}
                     />
                     <SummaryItem
                         image_url={slot10 && slot10?.image_url}
-                        onClick={() => console.log('XD')}
+                        onClick={() => slot10 && moveToSpellDetail(slot10)}
                     />
                 </View>
                 {hasMoonOfNokstella && (
                     <View style={style.item_row}>
                         <SummaryItem
                             image_url={slot11 && slot11?.image_url}
-                            onClick={() => console.log('XD')}
+                            onClick={() => slot11 && moveToSpellDetail(slot11)}
                         />
                         <SummaryItem
                             image_url={slot12 && slot12?.image_url}
-                            onClick={() => console.log('XD')}
+                            onClick={() => slot12 && moveToSpellDetail(slot12)}
                         />
                     </View>
                 )}

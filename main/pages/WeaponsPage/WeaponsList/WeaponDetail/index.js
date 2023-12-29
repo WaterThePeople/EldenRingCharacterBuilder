@@ -1,15 +1,15 @@
-import React, {useState, useEffect} from 'react';
-import {View, Image} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Image } from 'react-native';
 import style from './WeaponDetail.sass';
 import GoBackButton from '../../../../components/GoBackButton';
 import Title from '../../../../components/Title';
 import CardScroll from '../../../../components/CardScroll';
 import DefaultText from '../../../../components/DefaultText';
 import DefaultButton from '../../../../components/DefaultButton';
-import {selectWeapon} from '../../../../../firebase';
+import { selectWeapon } from '../../../../../firebase';
 
-export default function WeaponDetail({route, navigation}) {
-  const {weapon, hand, save_id} = route.params;
+export default function WeaponDetail({ route, navigation }) {
+  const { weapon, hand, save_id } = route.params;
 
   const checkIfPassiveEmpty = () => {
     if (weapon?.weapon_bleed > 0) return false;
@@ -45,7 +45,7 @@ export default function WeaponDetail({route, navigation}) {
             }}
           />
         </View>
-        <View style={[style.stats_info, {flex: 1}]}>
+        <View style={[style.stats_info, { flex: 1 }]}>
           <View style={style.left}>
             <DefaultText style={style.text}>Attack</DefaultText>
             <View style={style.left_stats}>
@@ -160,7 +160,7 @@ export default function WeaponDetail({route, navigation}) {
           </View>
         </View>
 
-        <View style={[style.scaling_info, {flex: 1}]}>
+        <View style={[style.scaling_info, { flex: 1 }]}>
           <View style={style.left}>
             <DefaultText style={style.text}>Scaling</DefaultText>
             <View style={[style.left_stats]}>
@@ -273,7 +273,7 @@ export default function WeaponDetail({route, navigation}) {
           </View>
         </View>
 
-        <View style={[style.type_info, {flex: 1}]}>
+        <View style={[style.type_info, { flex: 1 }]}>
           <View style={style.left}>
             <View style={style.left_stats}>
               <View style={style.text_color_container}>
@@ -300,7 +300,7 @@ export default function WeaponDetail({route, navigation}) {
           </View>
         </View>
 
-        <View style={[style.skill_info, {flex: 1}]}>
+        <View style={[style.skill_info, { flex: 1 }]}>
           <View style={style.left}>
             <View style={style.left_stats}>
               <View style={style.text_color_container}>
@@ -330,7 +330,7 @@ export default function WeaponDetail({route, navigation}) {
           </View>
         </View>
 
-        <View style={[style.passive_info, {flex: 1}]}>
+        <View style={[style.passive_info, { flex: 1 }]}>
           <View style={style.left}>
             <DefaultText style={style.text}>
               Passive {checkIfPassiveEmpty() && ': none'}
@@ -433,11 +433,13 @@ export default function WeaponDetail({route, navigation}) {
           </View>
         </View>
       </CardScroll>
-      <DefaultButton
-        styles={style.confirm_button}
-        label={'Select weapon'}
-        onClick={() => confirmWeapon()}
-      />
+      {hand != 'hand' && (
+        < DefaultButton
+          styles={style.confirm_button}
+          label={'Select weapon'}
+          onClick={() => confirmWeapon()}
+        />
+      )}
     </View>
   );
 }
