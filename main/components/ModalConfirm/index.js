@@ -14,7 +14,8 @@ export default function ModalConfirm(
         confirmLabel,
         declineLabel,
         confirmColor,
-        declineColor
+        declineColor,
+        textInfo,
     }
 ) {
     return (
@@ -35,6 +36,13 @@ export default function ModalConfirm(
                                 {text}
                             </DefaultText>
                         </View>
+                        {textInfo && (
+                            <View style={style.text_row}>
+                                <DefaultText style={style.text_info} numberOfLines={0} autoFont>
+                                    {textInfo}
+                                </DefaultText>
+                            </View>
+                        )}
                         <View style={style.button_row}>
                             {onConfirm && (
                                 <DefaultButton label={confirmLabel} styles={[style.confirm, { backgroundColor: confirmColor }]} onClick={onConfirm} />

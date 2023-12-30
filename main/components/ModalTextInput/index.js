@@ -21,6 +21,7 @@ export default function ModalTextInput(
         setInputValue,
         errorMessage,
         errorVisible,
+        maxLength = 100
     }
 ) {
     return (
@@ -50,6 +51,7 @@ export default function ModalTextInput(
                                 placeholder={inputPlaceholder}
                                 value={inputValue}
                                 onChange={setInputValue}
+                                maxLength={maxLength}
                             />
                         </View>
 

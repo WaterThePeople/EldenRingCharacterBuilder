@@ -1,17 +1,19 @@
-import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View } from 'react-native';
 import style from './BuildSelectionPage.sass';
 import Card from '../../components/Card';
 import CategoryButton from '../../components/CategoryButton';
 import GoBackButton from '../../components/GoBackButton';
 import DefaultTextInput from '../../components/DefaultTextInput';
-import {editSaveName} from '../../../firebase';
-import {getSave} from '../../../firebase';
+import { editSaveName } from '../../../firebase';
+import { getSave } from '../../../firebase';
+import { editPublishedSaveName } from '../../../firebase';
 import Loader from '../../components/Loader';
+import { useIsFocused } from '@react-navigation/native';
 
-export default function BuildSelectionPage({route, navigation}) {
-  const {saveFile} = route.params;
-
+export default function BuildSelectionPage({ route, navigation }) {
+  const { saveFile } = route.params;
+  const isFocused = useIsFocused();
   const [isLoading, setIsLoading] = useState(false);
 
   const [save, setSave] = useState([]);
@@ -26,9 +28,11 @@ export default function BuildSelectionPage({route, navigation}) {
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    getSaveData();
-  }, []);
+    if (isFocused) {
+      setIsLoading(true);
+      getSaveData();
+    }
+  }, [isFocused]);
 
   useEffect(() => {
     setSaveName(save?.save_name);
@@ -39,13 +43,17 @@ export default function BuildSelectionPage({route, navigation}) {
   useEffect(() => {
     if (saveName) {
       editSaveName(saveID, saveEmail, saveName);
+      if (save?.isPublic) {
+        editPublishedSaveName(saveID, saveEmail, saveName);
+      }
     }
   }, [saveName]);
 
-  const moveToScreen = (save_id, screen, save_name) => {
+  const moveToScreen = (save_id, screen, save_name, isPublic) => {
     navigation.navigate(screen, {
       save_id: save_id,
       save_name: save_name,
+      isPublic: isPublic,
     });
   };
 
@@ -63,7 +71,7 @@ export default function BuildSelectionPage({route, navigation}) {
             goBackButtonExist
             value={saveName}
             onChange={setSaveName}
-            maxLength={16}></DefaultTextInput>
+            maxLength={16}/>
         )}
       </View>
       {!isLoading ? (
@@ -102,7 +110,7 @@ export default function BuildSelectionPage({route, navigation}) {
             icon={'stats'}
             category={'Summary'}
             styles={style.item}
-            onClick={() => moveToScreen(saveID, 'SummaryScreen', saveName)}
+            onClick={() => moveToScreen(saveID, 'SummaryScreen', saveName, save?.isPublic)}
           />
         </Card>
       ) : (

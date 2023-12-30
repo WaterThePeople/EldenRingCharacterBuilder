@@ -9,6 +9,7 @@ import { getDatabase, ref, onValue, set } from 'firebase/database';
 import {
   collection,
   getFirestore,
+  firebase,
   getDocs,
   doc,
   getDoc,
@@ -56,6 +57,7 @@ const removeSave = async save_id => {
     const armorRef = doc(firestore, 'user_saves_armor', save_id.toString());
     const talismansRef = doc(firestore, 'user_saves_talismans', save_id.toString());
     const spellsRef = doc(firestore, 'user_saves_spells', save_id.toString());
+    const characterRef = doc(firestore, 'published_characters', save_id.toString());
 
     await deleteDoc(saveRef);
     await deleteDoc(classesRef);
@@ -63,6 +65,7 @@ const removeSave = async save_id => {
     await deleteDoc(armorRef);
     await deleteDoc(talismansRef);
     await deleteDoc(spellsRef);
+    await deleteDoc(characterRef);
   } catch (error) {
     console.log(error);
   }
@@ -90,6 +93,7 @@ const createNewSave = (save_id, user_email, save_name) => {
     save_id: save_id,
     save_name: save_name,
     user_email: user_email,
+    isPublic: false,
   });
 
   setDoc(classesRef, {
@@ -116,10 +120,43 @@ const createNewSave = (save_id, user_email, save_name) => {
 const editSaveName = (save_id, user_email, save_name) => {
   const savesRef = doc(firestore, 'user_saves', save_id.toString());
 
-  setDoc(savesRef, {
+  updateDoc(savesRef, {
+    save_name: save_name,
+  });
+}
+
+const editPublishedSaveName = (save_id, user_email, save_name) => {
+  const characterRef = doc(firestore, 'published_characters', save_id.toString());
+
+  updateDoc(characterRef, {
+    save_name: save_name,
+  });
+}
+
+const publishSave = async (save_id, save_name, user_email, user_name) => {
+  const characterRef = doc(firestore, 'published_characters', save_id.toString());
+  const savesRef = doc(firestore, 'user_saves', save_id.toString());
+
+  setDoc(characterRef, {
     save_id: save_id,
     save_name: save_name,
     user_email: user_email,
+    user_name: user_name,
+  });
+
+  updateDoc(savesRef, {
+    isPublic: true,
+  });
+};
+
+const makeSavePrivate = async (save_id) => {
+  const characterRef = doc(firestore, 'published_characters', save_id.toString());
+  const savesRef = doc(firestore, 'user_saves', save_id.toString());
+
+  await deleteDoc(characterRef);
+
+  updateDoc(savesRef, {
+    isPublic: false,
   });
 };
 
@@ -303,4 +340,7 @@ export {
   selectSpell,
   deleteSpell,
   getCurrentSpells,
+  publishSave,
+  editPublishedSaveName,
+  makeSavePrivate,
 };

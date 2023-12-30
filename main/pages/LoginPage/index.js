@@ -10,6 +10,8 @@ import { signInWithEmailAndPassword } from 'firebase/auth'
 import { useIsFocused } from '@react-navigation/native';
 import LoaderFullScreen from '../../components/LoaderFullScreen';
 import { useNetInfo } from '@react-native-community/netinfo';
+import { Switch } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginPage({ route, navigation }) {
 
@@ -19,6 +21,8 @@ export default function LoginPage({ route, navigation }) {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
+    const [rememberMe, setRememberMe] = useState('')
 
     const [wrongLogin, setWrongLogin] = useState(false)
     const [internetConnection, setInternetConnection] = useState(true)
@@ -52,18 +56,69 @@ export default function LoginPage({ route, navigation }) {
 
     useEffect(() => {
         if (isFocused) {
-            setEmail('test@gmail.com')
-            setPassword('pass123')
+            componentDidMount();
         }
     }, [isFocused]);
 
     useEffect(() => {
         if (netInfo?.isConnected === true) {
             setInternetConnection(true)
-        } else if(netInfo?.isConnected === false) {
+        } else if (netInfo?.isConnected === false) {
             setInternetConnection(false)
         }
     }, [netInfo?.isConnected]);
+
+    const toggleRememberMe = value => {
+        setRememberMe(value)
+        if (value === true) {
+            rememberUser();
+        } else {
+            forgetUser();
+        }
+    }
+
+    const rememberUser = async () => {
+        try {
+            await AsyncStorage.setItem('email', email);
+            await AsyncStorage.setItem('password', password);
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+    const forgetUser = async () => {
+        try {
+            await AsyncStorage.removeItem('email');
+            await AsyncStorage.removeItem('password');
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+    const getRememberedUser = async () => {
+        try {
+            const storage_email = await AsyncStorage.getItem('email');
+            if (storage_email !== null) {
+                setEmail(storage_email)
+                setRememberMe(true)
+            } else {
+                setRememberMe(false)
+                setEmail('')
+            }
+            const storage_password = await AsyncStorage.getItem('password');
+            if (storage_password !== null) {
+                setPassword(storage_password)
+            } else {
+                setPassword('')
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+    const componentDidMount = async () => {
+        await getRememberedUser();
+    }
 
     return (
         <>
@@ -107,7 +162,16 @@ export default function LoginPage({ route, navigation }) {
                             onChange={setPassword}
                             style={style.input}
                             placeholder={'Password'}
+                            secureTextEntry={true}
                         ></DefaultTextInput>
+                    </View>
+
+                    <View style={style.remember_me_container}>
+                        <Switch
+                            value={rememberMe}
+                            onValueChange={(value) => toggleRememberMe(value)}
+                        />
+                        <DefaultText style={style.remember_me_text}>Remember Me</DefaultText>
                     </View>
                 </View>
                 <View style={style.container}>

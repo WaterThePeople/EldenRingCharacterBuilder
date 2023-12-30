@@ -54,7 +54,7 @@ export default function SaveSelectionPage() {
     if (saveToAddName === '') {
       setSaveToAddErrorVisible(true)
       setSaveToAddErrorMessage('Save name cannot be empty')
-    } else if (saveToAddName.length > 20) {
+    } else if (saveToAddName.length > 16) {
       setSaveToAddErrorVisible(true)
       setSaveToAddErrorMessage('Save name cannot be longer than 20 characters')
     }
@@ -180,6 +180,7 @@ export default function SaveSelectionPage() {
         declineColor={'red'}
         errorVisible={saveToAddErrorVisible}
         errorMessage={saveToAddErrorMessage}
+        maxLength={16}
       />
     </>
   );

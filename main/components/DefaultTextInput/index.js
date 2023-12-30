@@ -12,7 +12,8 @@ export default function DefaultTextInput({
   goBackButtonExist,
   buttonSize = 90,
   maxLength = 100,
-  isNumeric
+  isNumeric,
+  secureTextEntry = false,
 }) {
   return (
     <>
@@ -35,7 +36,9 @@ export default function DefaultTextInput({
         numberOfLines={1}
         ellipsizeMode={textClip ? 'clip' : 'tail'}
         adjustsFontSizeToFit={autoFont}
-        placeholderTextColor="#fff"></TextInput>
+        placeholderTextColor="#fff"
+        secureTextEntry={secureTextEntry}
+      />
     </>
   );
 }
