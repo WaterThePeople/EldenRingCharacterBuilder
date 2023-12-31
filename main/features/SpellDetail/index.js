@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Image } from 'react-native';
 import style from './SpellDetail.sass';
-import GoBackButton from '../../../components/GoBackButton';
-import Title from '../../../components/Title';
-import CardScroll from '../../../components/CardScroll';
-import DefaultText from '../../../components/DefaultText';
-import DefaultButton from '../../../components/DefaultButton';
-import { selectSpell } from '../../../../firebase';
+import GoBackButton from '../../components/GoBackButton';
+import Title from '../../components/Title';
+import CardScroll from '../../components/CardScroll';
+import DefaultText from '../../components/DefaultText';
+import DefaultButton from '../../components/DefaultButton';
+import { selectSpell } from '../../../firebase';
 
 export default function SpellDetail({ route, navigation }) {
     const { spell, slot, save_id } = route.params;

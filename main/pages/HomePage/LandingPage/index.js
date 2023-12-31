@@ -50,7 +50,7 @@ export default function LandingPage() {
                         <View style={style.info_container}>
                             <DefaultText numberOfLines={0} style={style.text_style}>
                                 Welcome to Elden Ring character builder.
-                                This app allows to create characters, as well as view the characters made by other users.
+                                This app allows you to create characters, as well as view the characters made by other users.
                             </DefaultText>
                         </View>
                     </View>

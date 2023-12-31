@@ -56,7 +56,7 @@ export default function SaveSelectionPage() {
       setSaveToAddErrorMessage('Save name cannot be empty')
     } else if (saveToAddName.length > 16) {
       setSaveToAddErrorVisible(true)
-      setSaveToAddErrorMessage('Save name cannot be longer than 20 characters')
+      setSaveToAddErrorMessage('Save name cannot be longer than 16 characters')
     }
     else {
       setIsLoading(true)

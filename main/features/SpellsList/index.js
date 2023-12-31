@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import style from './SpellsList.sass';
-import GoBackButton from '../../../components/GoBackButton';
-import CategoryTitle from '../../../components/CategoryTitle';
-import CardScroll from '../../../components/CardScroll';
-import ListItem from '../../../components/ListItem';
-import DefaultButton from '../../../components/DefaultButton';
-import { deleteSpell } from '../../../../firebase';
-import ModalConfirm from '../../../components/ModalConfirm';
+import GoBackButton from '../../components/GoBackButton';
+import CategoryTitle from '../../components/CategoryTitle';
+import CardScroll from '../../components/CardScroll';
+import ListItem from '../../components/ListItem';
+import DefaultButton from '../../components/DefaultButton';
+import { deleteSpell } from '../../../firebase';
+import ModalConfirm from '../../components/ModalConfirm';
 
 export default function SpellsList({ route, navigation }) {
 

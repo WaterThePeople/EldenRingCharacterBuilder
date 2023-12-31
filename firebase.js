@@ -142,6 +142,7 @@ const publishSave = async (save_id, save_name, user_email, user_name) => {
     save_name: save_name,
     user_email: user_email,
     user_name: user_name,
+    ratings: [],
   });
 
   updateDoc(savesRef, {
@@ -159,6 +160,23 @@ const makeSavePrivate = async (save_id) => {
     isPublic: false,
   });
 };
+
+const getPublishedCharacters = async () => {
+  try {
+    const snapshot = await getDocs(collection(firestore, 'published_characters'));
+    const saves = snapshot.docs.map(doc => doc.data());
+    return saves;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const rateCharacter = async (save_id, ratings) => {
+  const characterRef = doc(firestore, 'published_characters', save_id.toString());
+  updateDoc(characterRef, {
+    ratings: ratings,
+  });
+}
 
 const getData = (index, setState) => {
   const data = ref(db, index);
@@ -343,4 +361,6 @@ export {
   publishSave,
   editPublishedSaveName,
   makeSavePrivate,
+  getPublishedCharacters,
+  rateCharacter,
 };

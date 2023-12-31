@@ -20,6 +20,12 @@ const icons =
     chestplate: require('../../../images/Armor.png'),
     gauntlets: require('../../../images/Right_hand.png'),
     greaves: require('../../../images/Greaves.png'),
+    rating1: require('../../../images/rating1.png'),
+    rating2: require('../../../images/rating2.png'),
+    rating3: require('../../../images/rating3.png'),
+    rating4: require('../../../images/rating4.png'),
+    rating5: require('../../../images/rating5.png'),
+    rating: require('../../../images/rating.png'),
 };
 
 export default icons;

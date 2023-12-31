@@ -12,6 +12,7 @@ import LoaderFullScreen from '../../components/LoaderFullScreen';
 import { useNetInfo } from '@react-native-community/netinfo';
 import { Switch } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import colors from '../../constantData/colors';
 
 export default function LoginPage({ route, navigation }) {
 
@@ -46,6 +47,9 @@ export default function LoginPage({ route, navigation }) {
             console.log(error)
         }
         finally {
+            if (rememberMe) {
+                rememberUser();
+            }
             setIsLoading(false)
         }
     }
@@ -168,6 +172,8 @@ export default function LoginPage({ route, navigation }) {
 
                     <View style={style.remember_me_container}>
                         <Switch
+                            trackColor={{ false: colors.silver, true: colors.light_blue }}
+                            thumbColor={rememberMe ? colors.blue : colors.white}
                             value={rememberMe}
                             onValueChange={(value) => toggleRememberMe(value)}
                         />
