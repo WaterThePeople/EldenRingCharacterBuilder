@@ -127,10 +127,21 @@ export default function SaveSelectionPage() {
         setSaveFiles(saveFiles => [...saveFiles, item])
       }
       if (index + 1 === saves.length) {
-        setLastID(saves[index].save_id + 1)
+        setLastID(createSaveID(saves))
       }
     })
   }, [saves]);
+
+  const createSaveID = (data) => {
+    let temp = data.length + 1
+    data?.map((item, index) => {
+      if (temp === item?.save_id) {
+        temp = temp + 1
+      }
+    })
+    return temp
+  }
+
 
   return (
     <>
